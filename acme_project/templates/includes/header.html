@@ -1,0 +1,38 @@
+{% load static %}
+{% with current_view=request.resolver_match.view_name %}
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container">
+      <div class="collapse navbar-collapse">
+        <ul class="nav nav-pills me-auto mb-2 mb-lg-0">
+          
+          <!-- Главная страница -->
+          <li class="nav-item">
+            <a class="nav-link {% if current_view == 'ice_cream:index' %}active{% endif %}" 
+               href="{% url 'ice_cream:index' %}">Главная</a>
+          </li>
+          
+          <!-- Каталог -->
+          <li class="nav-item">
+            <a class="nav-link {% if current_view == 'ice_cream:ice_cream_list' %}active{% endif %}" 
+               href="{% url 'ice_cream:ice_cream_list' %}">Каталог мороженого</a>
+          </li>
+          
+          <!-- О проекте -->
+          <li class="nav-item">
+            <a class="nav-link {% if current_view == 'ice_cream:about' %}active{% endif %}" 
+               href="{% url 'ice_cream:about' %}">О проекте</a>
+          </li>
+          
+        </ul>
+      </div>
+      
+      <!-- Логотип -->
+      <a class="navbar-brand" href="{% url 'ice_cream:index' %}">
+        <img src="{% static 'img/logo.png' %}" width="30" height="30" alt="Анфиса">
+      </a>
+      
+    </div>
+  </nav>
+</header>
+{% endwith %}
