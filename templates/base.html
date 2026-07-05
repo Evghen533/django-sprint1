@@ -1,5 +1,21 @@
-{% include 'includes/header.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Блогикум{% endblock %}</title>
+  <link rel="stylesheet" href="https://jsdelivr.net">
+</head>
+<body class="bg-light">
 
-<!-- Контент страницы -->
+  {% include "includes/header.html" %}
 
-{% include 'includes/footer.html' %}
+  <main class="container my-5">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  {% include "includes/footer.html" %}
+
+</body>
+</html>
