@@ -1,17 +1,19 @@
 {% load static %}
-<header>
-  <img src="{% static 'img/logo.png' %}" height="50" alt="">
-  <nav>
-    <ul>
-      <li>
-        <a href="{% url 'homepage:index' %}">Главная</а>
+{% with current_view=request.resolver_match.view_name %}
+<header class="border-bottom bg-white py-3 mb-4 shadow-sm">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link {% if current_view == 'blog:index' %}active{% endif %}" href="{% url 'blog:index' %}">Главная</a>
       </li>
-      <li>
-        <a href="{% url 'ice_cream: ice_cream_list' %}">Cnncok MopoxeHoro</a>
+      <li class="nav-item">
+        <a class="nav-link {% if current_view == 'pages:about' %}active{% endif %}" href="{% url 'pages:about' %}">О проекте</a>
       </li>
-      <li>
-        <a href="{% url 'about:description' %}">O npoekTe</a>
+      <li class="nav-item">
+        <a class="nav-link {% if current_view == 'pages:rules' %}active{% endif %}" href="{% url 'pages:rules' %}">Правила сайта</a>
       </li>
     </ul>
-  </nav>
+    <span class="fs-4 fw-bold text-primary">Блогикум</span>
+  </div>
 </header>
+{% endwith %}
