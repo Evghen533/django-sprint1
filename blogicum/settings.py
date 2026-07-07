@@ -50,7 +50,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
             BASE_DIR / 'anfisa_for_friends' / 'templates'
-        ],  
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
