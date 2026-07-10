@@ -1,0 +1,7 @@
+<h1>Категория: {{ category_slug }}</h1>
+{% for post in posts %}
+  <article>
+    <h2>{{ post.location }}</h2>
+    <p>{{ post.date }}</p>
+  </article>
+{% endfor %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.location }} — Блогикум{% endblock %}
+
+{% block content %}
+  <article class="my-5 p-4 border rounded shadow-sm bg-white">
+    <header class="mb-3">
+      <h1 class="h3">{{ post.location }}</h1>
+      <small class="text-muted">Дата: {{ post.date }}</small>
+    </header>
+
+    <p class="lead" style="white-space: pre-line;">{{ post.text }}</p>
+
+    <footer class="mt-3">
+      <a href="{% url 'blog:category_posts' post.category %}" class="badge bg-secondary text-decoration-none">
+        Категория: {{ post.category }}
+      </a>
+    </footer>
+  </article>
+{% endblock %}

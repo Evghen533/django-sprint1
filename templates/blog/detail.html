@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ post.location }} — Блогикум
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <article class="p-5 bg-white border rounded shadow-sm">
+        <header class="mb-4 border-bottom pb-3">
+          <!-- Ссылка на локацию -->
+          <h1 class="display-5 fw-bold text-dark">{{ post.location }}</h1>
+          <small class="text-muted">Дата публикации: {{ post.date }}</small>
+        </header>
+
+        <!-- Текст поста с сохранением переносов -->
+        <p class="lead text-secondary mb-4" style="white-space: pre-line;">{{ post.text }}</p>
+
+        <footer class="border-top pt-3">
+          <a href="{% url 'blog:category_posts' post.category %}" class="badge bg-secondary py-2 px-3 text-decoration-none">
+            Категория: {{ post.category }}
+          </a>
+        </footer>
+      </article>
+    </div>
+  </div>
+{% endblock %}

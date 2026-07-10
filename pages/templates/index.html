@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Анфиса для друзей. Главная
+{% endblock %}
+
+{% block content %}
+  <h1 class="pb-2 border-bottom">Главная страница</h1>
+  <p>Привет! Я Анфиса, твой персональный помощник. Здесь мои друзья делятся рецептами и оценивают разные сорта мороженого.</p>
+  
+  <div class="row pt-3">
+    {% for cream in ice_cream_list %}
+      {% include 'includes/ice_cream_card.html' %}
+    {% endfor %}
+  </div>
+{% endblock %}
