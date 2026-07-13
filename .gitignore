@@ -37,4 +37,7 @@ htmlcov/
 .pyre/
 .tox/
 .nox/
-anfisa1sprint
+
+# Старые/лишние папки из текущего проекта
+anfisa_for_friends/
+static/
