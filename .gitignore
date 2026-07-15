@@ -7,6 +7,10 @@ env/
 # База данных (не пушим в репозиторий)
 db.sqlite3
 db.sqlite3-journal
+anfisa1sprint/
+blogicum/blog/
+blogicum/views.py
+blog/templates/
 
 # Кэш и байт-код Python
 __pycache__/
