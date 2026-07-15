@@ -1,5 +1,6 @@
 def test_blog_posts():
     from blog.views import posts as solution_posts
+    from tests.conftest import EXPECTED_POSTS
 
     expected_posts = [
         {
@@ -25,7 +26,7 @@ def test_blog_posts():
         }
     ]
 
-    assert solution_posts == expected_posts, (
+    assert solution_posts == EXPECTED_POSTS, (
         "Убедитесь, что список с постами `posts` в файле `blog/views.py` "
-        "полностью совпадает с эталонным списком в задании."
+        "полностью совпадает с эталонным списком."
     )
