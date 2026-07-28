@@ -1,13 +1,14 @@
 from django.contrib import admin
-from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
+from django.urls import include, path
+
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('blog.urls')),
-    path('pages/', include('pages.urls')),
+    path('', views.index, name='index'),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),
+    path(
+        'category/<slug:slug>/',
+        views.category_posts,
+        name='category_posts'
+    ),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
