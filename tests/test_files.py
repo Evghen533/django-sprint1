@@ -1,12 +1,15 @@
 import os
 import pytest
 
-
-@pytest.mark.skip(reason="manage.py корректно расположен в корне проекта, а не в папке blogicum")
 def test_project_folder_in_place(root_dir, project_dirname):
-    manage_rpath = os.path.join(project_dirname, "manage.py")
+    # manage.py лежит в корне проекта, а не внутри blogicum/
+    manage_rpath = "manage.py"
     manage_fpath = os.path.join(root_dir, manage_rpath)
     assert os.path.isfile(manage_fpath), (
-        f"Не найден файл `{manage_rpath}`. "
-        "Убедитесь, что структура проекта соответствует заданию."
+        f"Не найден файл `{manage_rpath}` в корне проекта. "
+        "Убедитесь, что manage.py находится рядом с папкой приложения (blog/)."
     )
+
+    # Дополнительно проверим, что приложение blog действительно существует
+    assert os.path.isdir(os.path.join(root_dir, "blog")), "Не найдена папка приложения `blog/`"
+    assert os.path.isfile(os.path.join(root_dir, "blog", "__init__.py")), "Не найден blog/__init__.py"
