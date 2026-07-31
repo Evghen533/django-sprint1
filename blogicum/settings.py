@@ -104,3 +104,5 @@ STATICFILES_DIRS = [
 
 # Первичные ключи по умолчанию
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+print("APP BLOG IS LOADED")

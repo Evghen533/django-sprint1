@@ -2,28 +2,28 @@
 venv/
 .venv/
 env/
-.env
 
-# База данных (не пушим в репозиторий)
-db.sqlite3
-db.sqlite3-journal
-anfisa1sprint/
-blogicum/blog/
-blogicum/views.py
-blog/templates/
+# База данных (SQLite)
+*.sqlite3
+*.sqlite3-journal
 
-# Кэш и байт-код Python
+# Питоновские артефакты
 __pycache__/
 *.py[cod]
-*$py.class
+*\$py.class
 *.pyc
 
-# Локальные настройки Django
+# Секреты и локальные настройки
+.env
+.env.local
 local_settings.py
 
 # Статика и медиа (если собираешь их локально)
 media/
 staticfiles/
+
+# Логи
+*.log
 
 # IDE и редакторы
 .idea/
@@ -43,6 +43,7 @@ htmlcov/
 .tox/
 .nox/
 
-# Старые/лишние папки из текущего проекта
+# Старые/лишние папки (если они ещё существуют в проекте — удали их вручную)
+anfisa1sprint/
 anfisa_for_friends/
 static/

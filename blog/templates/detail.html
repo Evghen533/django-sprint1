@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Мороженое {{ cream.name }}
+{% endblock %}
+
+{% block content %}
+  <h1 class="pb-2 border-bottom">{{ cream.name }}</h1>
+  <div class="row pt-3">
+    <div class="col-md-8">
+      <p class="lead">{{ cream.description }}</p>
+    </div>
+    <div class="col-md-4">
+      <div class="bg-light p-3 border rounded">
+        <h5>Характеристики</h5>
+        <ul class="list-unstyled mb-0">
+          <li><strong>Категория:</strong> {{ cream.category }}</li>
+          <li><strong>Цена:</strong> {{ cream.price|default:"Не указана" }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+<div class="col-md-4 mb-4">
+  <div class="card h-100 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">{{ cream.name }}</h5>
+      <p class="card-text">{{ cream.description|truncatewords:15 }}</p>
+      <a href="{% url 'ice_cream:ice_cream_detail' cream.id %}" class="btn btn-primary btn-sm">Подробнее</a>
+    </div>
+  </div>
+</div>

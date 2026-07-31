@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Каталог мороженого
+{% endblock %}
+
+{% block content %}
+  <h1 class="pb-2 border-bottom">Каталог мороженого</h1>
+  <p>Полный список сортов нашего потрясающего мороженого, отсортированный по популярности.</p>
+  
+  <div class="row pt-3">
+    {% for cream in ice_cream_list %}
+      {% include 'includes/ice_cream_card.html' %}
+    {% empty %}
+      <p>К сожалению, каталог пока пуст.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
