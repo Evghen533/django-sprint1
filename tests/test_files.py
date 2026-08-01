@@ -1,9 +1,7 @@
 import os
 
 def test_project_folder_in_place(root_dir, project_dirname):
-    # root_dir — это C:\Dev\django-sprint1
-    # project_dirname — 'blogicum', но для manage.py он не нужен: файл лежит в корне
-
+    # В CI root_dir = /app, а manage.py лежит прямо в /app (а не в /app/blogicum)
     manage_path = os.path.join(root_dir, "manage.py")
     assert os.path.isfile(manage_path), (
         f"Не найден manage.py. Ищем по пути: {manage_path}. "
