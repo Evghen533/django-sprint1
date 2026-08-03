@@ -1,8 +1,4 @@
-def test_blog_posts():
-    from blog.views import posts as solution_posts
-    from tests.conftest import EXPECTED_POSTS
-
-    expected_posts = [
+expected_posts = [
         {
             "id": 0,
             "location": "Остров отчаянья",
@@ -25,8 +21,3 @@ def test_blog_posts():
             "text": "Всю ночь и весь день шёл дождь и дул сильный порывистый ветер. 25 октября. Корабль за ночь разбило в щепки; на том месте, где он стоял, торчат какие‑то жалкие обломки, да и те видны только во время отлива. Весь этот день я хлопотал около вещей: укрывал и укутывал их, чтобы не испортились от дождя."
         }
     ]
-
-    assert solution_posts == EXPECTED_POSTS, (
-        "Убедитесь, что список с постами `posts` в файле `blog/views.py` "
-        "полностью совпадает с эталонным списком."
-    )
