@@ -1,0 +1,30 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Все посты{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 fw-bold">Последние посты</h1>
+
+<div class="row g-4">
+  {% for post in posts %}
+  <div class="col-12 col-md-6 col-lg-4">
+    <article class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="card-title fw-bold">{{ post.title }}</h2>
+        <p class="text-muted small mb-2">
+          <span class="me-2">{{ post.date|date:"d.m.Y" }}</span>
+          <span>{{ post.location }}</span>
+        </p>
+        <p class="card-text text-truncate" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+          {{ post.text }}
+        </p>
+        <!-- Добавлена кнопка с правильным неймспейсом blog: -->
+        <a href="{% url 'blog:post_detail' post.pk %}" class="btn btn-outline-primary btn-sm">Читать далее</a>
+      </div>
+    </article>
+  </div>
+  {% empty %}
+  <p>Постов пока нет.</p>
+  {% endfor %}
+</div>
+{% endblock %}
