@@ -5,14 +5,11 @@ from pathlib import Path
 
 
 def main():
-    # Получаем абсолютный путь к папке, где лежит manage.py (это корень проекта)
     BASE_DIR = Path(__file__).resolve().parent
 
-    # Добавляем эту папку в sys.path, чтобы Python мог импортировать пакеты из неё
     if str(BASE_DIR) not in sys.path:
         sys.path.insert(0, str(BASE_DIR))
 
-    # Указываем Django, какой именно settings использовать
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blogicum.settings')
 
     try:
