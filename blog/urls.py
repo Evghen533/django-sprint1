@@ -5,5 +5,6 @@ app_name = 'blog'
 
 urlpatterns = [
     path('', views.post_list, name='post_list'),
-    path('<int:pk>/', views.post_detail, name='post_detail'),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),  # <-- Обязательно раскомментируй эту строку!
+    # path('category/<slug:category_slug>/', views.category_posts, name='category_posts'),  # <-- Пока оставь закомментированной
 ]

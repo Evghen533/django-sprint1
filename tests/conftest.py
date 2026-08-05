@@ -1,6 +1,6 @@
 import pytest
 from django.test import Client
-from blog.models import Post
+from blog.models import Post, Category
 
 @pytest.fixture
 def client():
@@ -19,10 +19,17 @@ def try_get_url(client):
 def posts(django_db_blocker):
     with django_db_blocker.unblock():
         Post.objects.all().delete()
+        Category.objects.all().delete()
+
+        # Убрали title, оставили только slug
+        cat_travel = Category.objects.create(slug="travel")
+        cat_adventure = Category.objects.create(slug="adventure")
+        cat_city = Category.objects.create(slug="city")
+
         created = Post.objects.bulk_create([
-            Post(title="Пост 1", text="Текст первого поста", date="2025-01-01", location="Москва", category="travel"),
-            Post(title="Пост 2", text="Текст второго поста", date="2025-01-02", location="Санкт-Петербург", category="adventure"),
-            Post(title="Пост 3", text="Текст третьего поста", date="2025-01-03", location="Казань", category="city"),
+            Post(title="Пост 1", text="Текст первого поста", date="2025-01-01", location="Москва", category=cat_travel),
+            Post(title="Пост 2", text="Текст второго поста", date="2025-01-02", location="Санкт-Петербург", category=cat_adventure),
+            Post(title="Пост 3", text="Текст третьего поста", date="2025-01-03", location="Казань", category=cat_city),
         ])
     return list(created)
 

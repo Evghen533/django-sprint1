@@ -46,4 +46,3 @@ htmlcov/
 # Старые/лишние папки (если они ещё существуют в проекте — удали их вручную)
 anfisa1sprint/
 anfisa_for_friends/
-static/
