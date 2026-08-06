@@ -7,7 +7,10 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("blog", "0004_rename_text_post_content_remove_post_category_and_more"),
+        (
+            "blog",
+            "0004_rename_text_post_content_remove_post_category_and_more",
+        ),
     ]
 
     operations = [
