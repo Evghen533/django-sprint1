@@ -1,6 +1,6 @@
-# blog/views.py
 from django.shortcuts import render, get_object_or_404
-from .models import Post
+from .models import Post, Category
+
 
 def post_list(request):
     posts = Post.objects.filter(is_published=True).order_by('-created_at')
@@ -13,12 +13,14 @@ def post_detail(request, post_id):
 
 
 def category_posts(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
     posts = (
         Post.objects
-        .filter(category__slug=category_slug, is_published=True)
+        .filter(category=category, is_published=True)
         .order_by('-created_at')
     )
-    return render(request, 'blog/category.html', {
-        'category_slug': category_slug,
-        'posts': posts,
-    })
+    return render(
+        request,
+        'blog/category.html',
+        {'category': category, 'posts': posts},
+    )
