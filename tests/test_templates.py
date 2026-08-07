@@ -1,3 +1,4 @@
+from django.urls import reverse, NoReverseMatch
 import pytest
 
 @pytest.mark.django_db
@@ -17,7 +18,7 @@ def test_post_detail_pages(posts, try_get_url, post_index):
     assert post.title in content, f"Заголовок поста '{post.title}' не найден в HTML."
 
 @pytest.mark.django_db
-def test_post_list(try_get_url):
+def test_post_list(posts, try_get_url):
     url = reverse('blog:post_list')
     response = try_get_url(url)
     assert response.status_code == 200

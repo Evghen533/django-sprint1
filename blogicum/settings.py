@@ -25,8 +25,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "pages",
     "blog",
-    "pages.apps.PagesConfig",
 ]
 
 MIDDLEWARE = [
@@ -99,7 +99,9 @@ USE_TZ = True
 # Настройки статических файлов (CSS, JS, картинки)
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 # Первичные ключи по умолчанию
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

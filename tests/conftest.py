@@ -1,5 +1,6 @@
 import pytest
 from django.test import Client
+from datetime import datetime
 from blog.models import Post, Category
 
 @pytest.fixture
@@ -21,17 +22,37 @@ def posts(django_db_blocker):
         Post.objects.all().delete()
         Category.objects.all().delete()
 
-        # Убрали title, оставили только slug
-        cat_travel = Category.objects.create(slug="travel")
-        cat_adventure = Category.objects.create(slug="adventure")
-        cat_city = Category.objects.create(slug="city")
+        cat_travel = Category.objects.create(title="Travel", slug="travel")
+        cat_adventure = Category.objects.create(title="Adventure", slug="adventure")
+        cat_city = Category.objects.create(title="City", slug="city")
+
+        from datetime import datetime
+        import django.utils.timezone as timezone
 
         created = Post.objects.bulk_create([
-            Post(title="Пост 1", text="Текст первого поста", date="2025-01-01", location="Москва", category=cat_travel),
-            Post(title="Пост 2", text="Текст второго поста", date="2025-01-02", location="Санкт-Петербург", category=cat_adventure),
-            Post(title="Пост 3", text="Текст третьего поста", date="2025-01-03", location="Казань", category=cat_city),
+            Post(
+                title="Шторм и крушение",
+                content="Текст первого поста",          # ← было text, стало content
+                created_at=timezone.make_aware(datetime(2025, 1, 1, 10, 0, 0)),
+                is_published=True,
+                category=cat_travel,
+            ),
+            Post(
+                title="Корабль сняло с мели",
+                content="Текст второго поста",         # ← было text
+                created_at=timezone.make_aware(datetime(2025, 1, 2, 11, 0, 0)),
+                is_published=True,
+                category=cat_adventure,
+            ),
+            Post(
+                title="Третий пост",
+                content="Текст третьего поста",        # ← было text
+                created_at=timezone.make_aware(datetime(2025, 1, 3, 12, 0, 0)),
+                is_published=True,
+                category=cat_city,
+            ),
         ])
-    return list(created)
+    return created
 
 @pytest.fixture()
 def settings_app_name():

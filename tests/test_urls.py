@@ -1,5 +1,5 @@
-import pytest
 from django.urls import reverse, NoReverseMatch
+import pytest
 
 # Тесты для приложения blog (с неймспейсом)
 @pytest.mark.parametrize("name, args", [

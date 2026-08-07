@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% load static %}
 {% block title %}Категория: {{ category_slug }}{% endblock %}
 
 {% block content %}
@@ -12,9 +12,12 @@
         <article class="card shadow-sm h-100">
           <div class="card-body">
             <h3 class="card-title fw-bold">{{ post.title }}</h3>
+
             <p class="text-muted small">{{ post.date|date:"d.m.Y" }} · {{ post.location }}</p>
-            <p class="card-text">{{ post.text|truncatechars:120 }}</p>
-            <a href="{% url 'post_detail' post.pk %}" class="btn btn-primary btn-sm w-100">Читать</a>
+
+            <p class="card-text">{{ post.content|truncatechars:120 }}</p>
+
+            <a href="{% url 'blog:post_detail' post_id=post.pk %}" class="btn btn-primary btn-sm w-100">Читать</a>
           </div>
         </article>
       </div>

@@ -1,4 +1,4 @@
-{% extends "blog/base.html" %}
+{% load static %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -10,7 +10,7 @@
 
     {% if post.created_at %}
       <p class="text-muted small mb-3">
-        <span class="me-2">{{ post.created_at|date:"Y-m-d H:i" }}</span>
+        <span class="me-2">{{ post.created_at|date:"d.m.Y H:i" }}</span>
       </p>
     {% endif %}
 
