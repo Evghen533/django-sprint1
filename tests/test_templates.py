@@ -1,5 +1,6 @@
-from django.urls import reverse, NoReverseMatch
 import pytest
+from django.urls import reverse
+from blog.models import Post
 
 @pytest.mark.django_db
 @pytest.mark.parametrize("post_index", [0, 1, 2])

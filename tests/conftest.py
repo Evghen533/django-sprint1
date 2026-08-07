@@ -1,11 +1,11 @@
 import pytest
 from django.test import Client
-from datetime import datetime
 from blog.models import Post, Category
 
 @pytest.fixture
 def client():
     return Client()
+
 
 @pytest.fixture
 def try_get_url(client):
@@ -15,6 +15,7 @@ def try_get_url(client):
             return response
         raise AssertionError(f'Не удалось загрузить `{url}`: статус {response.status_code}')
     return _try_get_url
+
 
 @pytest.fixture(scope="function")
 def posts(django_db_blocker):
@@ -58,10 +59,12 @@ def posts(django_db_blocker):
 def settings_app_name():
     return 'blogicum'
 
+
 @pytest.fixture()
 def root_dir():
     from pathlib import Path
     return str(Path(__file__).parent.parent)
+
 
 @pytest.fixture()
 def project_dirname():

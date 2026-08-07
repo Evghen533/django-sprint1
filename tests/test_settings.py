@@ -1,4 +1,3 @@
-import pytest
 from django import get_version
 
 
