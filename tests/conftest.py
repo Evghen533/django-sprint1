@@ -1,6 +1,8 @@
 import pytest
 from django.test import Client
 from blog.models import Post, Category
+from datetime import datetime
+import django.utils.timezone as timezone
 
 
 @pytest.fixture
@@ -21,52 +23,35 @@ def try_get_url(client):
 @pytest.fixture(scope="function")
 def posts(django_db_blocker):
     with django_db_blocker.unblock():
+        # Очищаем данные перед каждым тестом, чтобы не было пересечений
         Post.objects.all().delete()
         Category.objects.all().delete()
 
-        cat_travel = Category.objects.create(title="Travel", slug="travel")
-        cat_adventure = Category.objects.create(title="Adventure", slug="adventure")
-        cat_city = Category.objects.create(title="City", slug="city")
+        cat_travel = Category.objects.create(title="Путешествия", slug="travel")
+        cat_adventure = Category.objects.create(title="Приключения", slug="adventure")
+        cat_city = Category.objects.create(title="Город", slug="city")
 
-        from datetime import datetime
-        import django.utils.timezone as timezone
+        # Создаём посты по одному — так мы точно контролируем порядок и можем легко менять поля
+        p1 = Post.objects.create(
+            title="Шторм и крушение",
+            content="Текст первого поста",
+            created_at=timezone.make_aware(datetime(2025, 1, 1, 10, 0, 0)),
+            is_published=True,
+            category=cat_travel,
+        )
+        p2 = Post.objects.create(
+            title="Корабль сняло с мели",
+            content="Текст второго поста",
+            created_at=timezone.make_aware(datetime(2025, 1, 2, 11, 0, 0)),
+            is_published=True,
+            category=cat_adventure,
+        )
+        p3 = Post.objects.create(
+            title="Третий пост",
+            content="Текст третьего поста",
+            created_at=timezone.make_aware(datetime(2025, 1, 3, 12, 0, 0)),
+            is_published=True,
+            category=cat_city,
+        )
 
-        created = Post.objects.bulk_create([
-            Post(
-                title="Шторм и крушение",
-                content="Текст первого поста",          # ← было text, стало content
-                created_at=timezone.make_aware(datetime(2025, 1, 1, 10, 0, 0)),
-                is_published=True,
-                category=cat_travel,
-            ),
-            Post(
-                title="Корабль сняло с мели",
-                content="Текст второго поста",         # ← было text
-                created_at=timezone.make_aware(datetime(2025, 1, 2, 11, 0, 0)),
-                is_published=True,
-                category=cat_adventure,
-            ),
-            Post(
-                title="Третий пост",
-                content="Текст третьего поста",        # ← было text
-                created_at=timezone.make_aware(datetime(2025, 1, 3, 12, 0, 0)),
-                is_published=True,
-                category=cat_city,
-            ),
-        ])
-    return created
-
-@pytest.fixture()
-def settings_app_name():
-    return 'blogicum'
-
-
-@pytest.fixture()
-def root_dir():
-    from pathlib import Path
-    return str(Path(__file__).parent.parent)
-
-
-@pytest.fixture()
-def project_dirname():
-    return 'blogicum'
+    return [p1, p2, p3]
