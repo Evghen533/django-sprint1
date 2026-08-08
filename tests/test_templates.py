@@ -2,6 +2,7 @@ import pytest
 from django.urls import reverse
 from blog.models import Post
 
+
 @pytest.mark.django_db
 @pytest.mark.parametrize("post_index", [0, 1, 2])
 def test_post_detail_pages(posts, try_get_url, post_index):
