@@ -1,3 +1,4 @@
+# blog/test/test_views.py
 from django.test import TestCase
 from blog.models import Post, Category
 from django.utils import timezone
@@ -14,38 +15,37 @@ class ViewsTestCase(TestCase):
             title="Not My Day", slug="not-my-day"
         )
 
-        Post.objects.bulk_create(
-            [
-                Post(
-                    title="Шторм и крушение",
-                    content="Текст первого поста",
-                    created_at=timezone.make_aware(datetime(2025, 1, 1, 10, 0, 0)),
-                    is_published=True,
-                    category=cls.cat_travel,
-                ),
-                Post(
-                    title="Корабль сняло с мели",
-                    content="Текст второго поста",
-                    created_at=timezone.make_aware(datetime(2025, 1, 2, 11, 0, 0)),
-                    is_published=True,
-                    category=cls.cat_adventure,
-                ),
-                Post(
-                    title="Третий пост",
-                    content="Текст третьего поста",
-                    created_at=timezone.make_aware(datetime(2025, 1, 3, 12, 0, 0)),
-                    is_published=True,
-                    category=cls.cat_city,
-                ),
-                Post(
-                    title="Дождь и ветер",
-                    content="Плохой день на море",
-                    created_at=timezone.make_aware(datetime(2025, 1, 4, 9, 0, 0)),
-                    is_published=True,
-                    category=cls.cat_not_my_day,
-                ),
-            ]
-        )
+        posts = [
+            Post(
+                title="Шторм и крушение",
+                content="Текст первого поста",
+                created_at=timezone.make_aware(datetime(2025, 1, 1, 10, 0, 0)),
+                is_published=True,
+                category=cls.cat_travel,
+            ),
+            Post(
+                title="Корабль сняло с мели",
+                content="Текст второго поста",
+                created_at=timezone.make_aware(datetime(2025, 1, 2, 11, 0, 0)),
+                is_published=True,
+                category=cls.cat_adventure,
+            ),
+            Post(
+                title="Третий пост",
+                content="Текст третьего поста",
+                created_at=timezone.make_aware(datetime(2025, 1, 3, 12, 0, 0)),
+                is_published=True,
+                category=cls.cat_city,
+            ),
+            Post(
+                title="Дождь и ветер",
+                content="Плохой день на море",
+                created_at=timezone.make_aware(datetime(2025, 1, 4, 9, 0, 0)),
+                is_published=True,
+                category=cls.cat_not_my_day,
+            ),
+        ]
+        Post.objects.bulk_create(posts)
 
     def test_index_page(self):
         response = self.client.get("/")
@@ -58,7 +58,7 @@ class ViewsTestCase(TestCase):
             self.assertEqual(
                 response.status_code,
                 200,
-                f"Post {post.pk} should be 200",
+                f"Post {post.pk} status",
             )
 
     def test_post_detail_invalid(self):

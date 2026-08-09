@@ -26,3 +26,4 @@ pytokens==0.4.1
 snowballstemmer==3.1.1
 sqlparse==0.5.5
 tzdata==2026.3
+pytest-cov>=4.1.0
