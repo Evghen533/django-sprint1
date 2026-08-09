@@ -2,18 +2,17 @@
 from django.urls import path
 from . import views
 
-app_name = "blog"
+app_name = 'blog'
 
 urlpatterns = [
-    path("", views.post_list, name="post_list"),
+    # главная страница со списком постов
+    path('', views.post_list, name='post_list'),
+    # страница отдельного поста
+    path('<int:pk>/', views.post_detail, name='post_detail'),
+    # страница категории
     path(
-        "<int:pk>/",
-        views.post_detail,
-        name="post_detail",
-    ),
-    path(
-        "category/<slug:category_slug>/",
-        views.category_posts,
-        name="category_posts",
+        'category/<slug:slug>/',
+        views.category_view,
+        name='category_posts',
     ),
 ]
