@@ -15,17 +15,17 @@ def test_static_dir(settings):
     Проверяет, что STATICFILES_DIRS задан и содержит путь к папке static.
     Это соответствует текущей структуре проекта.
     """
-    assert hasattr(settings, "STATICFILES_DIRS"), (
-        "Переменная STATICFILES_DIRS должна быть определена в settings.py"
-    )
-    assert len(settings.STATICFILES_DIRS) > 0, (
-        "STATICFILES_DIRS не должен быть пустым: укажите путь к папке со статикой"
-    )
+    assert hasattr(
+        settings, "STATICFILES_DIRS"
+    ), "Переменная STATICFILES_DIRS должна быть определена в settings.py"
+    assert (
+        len(settings.STATICFILES_DIRS) > 0
+    ), "STATICFILES_DIRS не должен быть пустым: укажите путь к папке со статикой"
     # Проверяем, что хотя бы один путь содержит 'static' (чтобы убедиться, что это нужная папка)
     has_static_path = any("static" in str(path) for path in settings.STATICFILES_DIRS)
-    assert has_static_path, (
-        "В STATICFILES_DIRS должен быть путь к папке static (например, C:/Dev/django-sprint1/static)"
-    )
+    assert (
+        has_static_path
+    ), "В STATICFILES_DIRS должен быть путь к папке static (например, C:/Dev/django-sprint1/static)"
 
 
 def test_apps_registered(settings):
@@ -36,10 +36,7 @@ def test_apps_registered(settings):
     installed = settings.INSTALLED_APPS
 
     # blog должен быть точно
-    has_blog = any(
-        app == "blog" or app.startswith("blog.apps")
-        for app in installed
-    )
+    has_blog = any(app == "blog" or app.startswith("blog.apps") for app in installed)
     assert has_blog, "Приложение 'blog' должно быть зарегистрировано в INSTALLED_APPS."
 
     # Если pages всё ещё в проекте — мы не требуем его удаления.

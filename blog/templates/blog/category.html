@@ -17,7 +17,7 @@
 
             <p class="card-text">{{ post.content|truncatechars:120 }}</p>
 
-            <a href="{% url 'blog:post_detail' post_id=post.pk %}" class="btn btn-primary btn-sm w-100">Читать</a>
+            <a href="{% url 'blog:post_detail' pk=post.pk %}" class="btn btn-primary btn-sm w-100">Читать</a>
           </div>
         </article>
       </div>

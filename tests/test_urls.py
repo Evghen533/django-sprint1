@@ -3,10 +3,13 @@ import pytest
 
 
 # Тесты для приложения blog (с неймспейсом)
-@pytest.mark.parametrize("name, args", [
-    ("blog:post_list", []),
-    ("blog:post_detail", [1]),  # ID поста — будет подставлен в тестах с БД
-])
+@pytest.mark.parametrize(
+    "name, args",
+    [
+        ("blog:post_list", []),
+        ("blog:post_detail", [1]),  # ID поста — будет подставлен в тестах с БД
+    ],
+)
 def test_blog_url_names(name, args):
     try:
         reverse(name, args=args)

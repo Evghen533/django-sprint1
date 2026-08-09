@@ -6,6 +6,17 @@ import django.utils.timezone as timezone
 
 
 @pytest.fixture
+def root_dir():
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+
+@pytest.fixture
+def project_dirname():
+    # если нужно имя папки проекта
+    return "django-sprint1"
+
+
+@pytest.fixture
 def client():
     return Client()
 
@@ -16,7 +27,10 @@ def try_get_url(client):
         response = client.get(url)
         if response.status_code < 300:
             return response
-        raise AssertionError(f'Не удалось загрузить `{url}`: статус {response.status_code}')
+        raise AssertionError(
+            f"Не удалось загрузить `{url}`: статус {response.status_code}"
+        )
+
     return _try_get_url
 
 
