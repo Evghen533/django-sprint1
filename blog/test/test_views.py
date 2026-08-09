@@ -9,7 +9,9 @@ class ViewsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.cat_travel = Category.objects.create(title="Travel", slug="travel")
-        cls.cat_adventure = Category.objects.create(title="Adventure", slug="adventure")
+        cls.cat_adventure = Category.objects.create(
+            title="Adventure", slug="adventure"
+        )
         cls.cat_city = Category.objects.create(title="City", slug="city")
         cls.cat_not_my_day = Category.objects.create(
             title="Not My Day", slug="not-my-day"
