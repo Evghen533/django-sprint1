@@ -1,3 +1,4 @@
+import os
 import pytest
 from django.test import Client
 from blog.models import Post, Category
@@ -12,7 +13,6 @@ def root_dir():
 
 @pytest.fixture
 def project_dirname():
-    # если нужно имя папки проекта
     return "django-sprint1"
 
 
@@ -45,7 +45,6 @@ def posts(django_db_blocker):
         cat_adventure = Category.objects.create(title="Приключения", slug="adventure")
         cat_city = Category.objects.create(title="Город", slug="city")
 
-        # Создаём посты по одному — так мы точно контролируем порядок и можем легко менять поля
         p1 = Post.objects.create(
             title="Шторм и крушение",
             content="Текст первого поста",

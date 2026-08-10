@@ -3,6 +3,7 @@ from django.test import TestCase
 from blog.models import Post, Category
 from django.utils import timezone
 from datetime import datetime
+from django.urls import reverse
 
 
 class ViewsTestCase(TestCase):
@@ -56,15 +57,17 @@ class ViewsTestCase(TestCase):
 
     def test_post_detail_valid(self):
         for post in Post.objects.all():
-            response = self.client.get(f"/{post.pk}/")
+            url = reverse('blog:post_detail', args=[post.pk])
+            response = self.client.get(url)
             self.assertEqual(
                 response.status_code,
                 200,
-                f"Post {post.pk} status",
+                f"Post {post.pk} status (url={url})",
             )
 
     def test_post_detail_invalid(self):
-        response = self.client.get("/posts/999/")
+        url = reverse('blog:post_detail', args=[9999])
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     def test_category_travel(self):

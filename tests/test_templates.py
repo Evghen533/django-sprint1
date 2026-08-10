@@ -1,3 +1,4 @@
+# tests/test_templates.py
 import pytest
 from django.urls import reverse
 
@@ -9,7 +10,6 @@ def test_post_detail_pages(posts, try_get_url, post_index):
     url = reverse("blog:post_detail", args=[post.pk])
     response = try_get_url(url)
     assert response.status_code == 200
-
     assert response.context is not None
     assert response.context.get("post") is not None
     assert response.context["post"].pk == post.pk

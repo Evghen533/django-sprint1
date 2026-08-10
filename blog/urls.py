@@ -8,7 +8,7 @@ urlpatterns = [
     # главная страница со списком постов
     path('', views.post_list, name='post_list'),
     # страница отдельного поста
-    path('<int:pk>/', views.post_detail, name='post_detail'),
+    path('posts/<int:pk>/', views.post_detail, name='post_detail'),
     # страница категории
     path(
         'category/<slug:slug>/',

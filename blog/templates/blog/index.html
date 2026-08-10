@@ -18,10 +18,15 @@
             <li><strong>Дата:</strong> {{ post.date }}</li>
             <li>
               <strong>Категория:</strong>
-              <a href="{% url 'blog:category_posts' post.category_slug %}"
-                 class="badge bg-primary text-decoration-none">
-                {{ post.category_name }}
-              </a>
+              {% if post.category_slug %}
+                <a href="{% url 'blog:category_posts' post.category.slug %}"
+                   class="badge bg-primary text-decoration-none">
+                  {{ post.category.title }}
+                </a>
+              {% else %}
+                <span class="badge bg-secondary text-decoration-none">
+                </span>
+              {% endif %}
             </li>
           </ul>
 
