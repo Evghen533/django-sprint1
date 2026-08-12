@@ -3,24 +3,20 @@ from django.utils import timezone
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
-    date = models.DateField(null=True, blank=True)
-    is_published = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=True)
     category = models.ForeignKey(
-        Category,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        Category, on_delete=models.SET_NULL, null=True, related_name="posts"
     )
 
     def __str__(self):

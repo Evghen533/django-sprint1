@@ -11,23 +11,20 @@
     <article class="card shadow-sm h-100">
       <div class="card-body">
         <h2 class="card-title fw-bold">{{ post.title }}</h2>
-
-        <!-- ИСПРАВЛЕНО: created_at вместо date, убраны location и text -->
         <p class="text-muted small mb-2">
-          <span class="me-2">{{ post.created_at|date:"d.m.Y H:i" }}</span>
+          <span class="me-2">{{ post.date|date:"d.m.Y" }}</span>
+          <span>{{ post.location }}</span>
         </p>
-
-        <!-- ИСПРАВЛЕНО: content вместо text -->
         <p class="card-text text-truncate" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-          {{ post.content|truncatechars:120 }}
+          {{ post.text }}
         </p>
-
+        <!-- Добавлена кнопка с правильным неймспейсом blog: -->
         <a href="{% url 'blog:post_detail' post.pk %}" class="btn btn-outline-primary btn-sm">Читать далее</a>
       </div>
     </article>
   </div>
   {% empty %}
-  <p class="col-12">Постов пока нет. Добавь их в админке!</p>
+  <p>Постов пока нет.</p>
   {% endfor %}
 </div>
 {% endblock %}

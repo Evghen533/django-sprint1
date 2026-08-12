@@ -1,10 +1,13 @@
+import os
 import sys
 from pathlib import Path
 
 
 def main():
-    BASE_DIR = Path(__file__).resolve().parent
+    # ЭТА СТРОКА ОБЯЗАТЕЛЬНА: она говорит Django, где лежат настройки
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blogicum.settings")
 
+    BASE_DIR = Path(__file__).resolve().parent
     if str(BASE_DIR) not in sys.path:
         sys.path.insert(0, str(BASE_DIR))
 
@@ -20,5 +23,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

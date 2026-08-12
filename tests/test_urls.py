@@ -2,12 +2,11 @@ from django.urls import reverse, NoReverseMatch
 import pytest
 
 
-# Тесты для приложения blog (с неймспейсом)
 @pytest.mark.parametrize(
     "name, args",
     [
         ("blog:post_list", []),
-        ("blog:post_detail", [1]),  # ID поста — будет подставлен в тестах с БД
+        ("blog:post_detail", [1]),
     ],
 )
 def test_blog_url_names(name, args):
@@ -15,7 +14,10 @@ def test_blog_url_names(name, args):
         reverse(name, args=args)
     except NoReverseMatch as e:
         raise AssertionError(
-            f"URL с именем '{name}' не найден. Проверьте urls.py и app_name='blog'. Ошибка: {e}"
+            f"URL с именем '{name}' не найден. Проверьте urls.py "
+            f"и app_name='blog'. Ошибка: {e}"
         ) from e
     except Exception as e:
-        raise AssertionError(f"При проверке URL '{name}' возникла ошибка: {e}") from e
+        raise AssertionError(
+            f"При проверке URL '{name}' возникла ошибка: {e}"
+        ) from e
