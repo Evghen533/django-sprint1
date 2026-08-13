@@ -1,70 +1,70 @@
 import pytest
 from django.urls import reverse
-from django.utils import timezone
-from datetime import datetime
 from blog.models import Category, Post
 
 
 @pytest.mark.django_db
-def test_blog_posts(try_get_url):
-    cat_travel, _ = Category.objects.get_or_create(
-        slug="travel", defaults={"name": "Путешествия"}
-    )
-    cat_bad, _ = Category.objects.get_or_create(
-        slug="not-my-day", defaults={"name": "Не мой день"}
-    )
+def test_post_list_page_has_posts():
+    """
+    Проверяет, что главная страница (/) возвращает статус 200
+    и содержит хотя бы один опубликованный пост.
+    Этот тест сам создаёт данные, потому что не зависит от фикстуры posts.
+    """
+    category = Category.objects.create(title="Путешествия", slug="travel")
 
-    Post.objects.get_or_create(
-        title="Корабль потерпел крушение",
-        content=(
-            "Наш корабль, застигнутый в открытом море страшным штормом, "
-            "потерпел крушение. Весь экипаж, кроме меня, утонул; я же, "
-            "несчастный Робинзон Крузо, был выброшен полумёртвым на берег "
-            " этого проклятого острова, который назвал островом Отчаяния."
-        ),
-        created_at=timezone.make_aware(datetime(1659, 9, 30)),
-        category=cat_travel,
+    Post.objects.create(
+        title="Первый пост",
+        slug="first-post",
+        content="Текст первого поста",
+        category=category,
         is_published=True,
     )
 
-    Post.objects.get_or_create(
-        title="Проснувшись поутру",
-        content=(
-            "Проснувшись поутру, я увидел, что наш корабль "
-            "сняло с мели приливом и пригнало гораздо ближе к берегу. "
-            "Это подало мне надежду, что, когда ветер стихнет, "
-            "мне удастся добраться до корабля и "
-            "запастись едой и другими необходимыми вещами."
-        ),
-        created_at=timezone.make_aware(datetime(1659, 10, 1)),
-        category=cat_bad,
-        is_published=True,
-    )
+    from django.test import Client
+    client = Client()
+    response = client.get('/')
+    assert response.status_code == 200
 
-    Post.objects.get_or_create(
-        title="Дождь и ветер",
-        content=(
-            "Всю ночь и весь день шёл дождь и дул сильный порывистый ветер. "
-            "25 октября. Корабль за ночь разбило в щепки; на том месте, "
-            "где он стоял, торчат какие‑то жалкие обломки, да и те видны "
-            "только во время отлива. Весь этот день я хлопотал около вещей: "
-            "укрывал и укутывал их, чтобы не испортились от дождя."
-        ),
-        created_at=timezone.make_aware(datetime(1659, 10, 25)),
-        category=cat_bad,
-        is_published=True,
-    )
+    html = response.content.decode("utf-8")
+    assert "Первый пост" in html
 
+
+@pytest.mark.django_db
+def test_blog_posts(try_get_url, posts):
+    """
+    Проверяет логику отображения постов разных категорий.
+    Использует фикстуру 'posts' из conftest.py — она уже создала все тестовые данные.
+    Никаких дополнительных create/get_or_create здесь быть не должно.
+    """
     url = reverse("blog:post_list")
     response = try_get_url(url)
 
     assert response.status_code == 200
 
-    posts = response.context.get("posts")
-    assert posts is not None
-    assert len(posts) >= 3
+    posts_in_context = response.context.get("posts")
+    assert posts_in_context is not None
+    assert len(posts_in_context) >= 3
 
-    for post in posts:
-        if post.category:
-            assert post.category.slug in ["travel", "not-my-day"]
-        assert ("корабль" in post.content) or ("дождь" in post.content)
+    # Превращаем список постов в словарь по slug для удобной проверки
+    posts_by_slug = {p.slug: p for p in posts_in_context}
+
+    # Эти slug должны точно совпадать с теми, что создаёт фикстура posts в conftest.py
+    expected_slugs = [
+        "storm-and-wreck",
+        "ship-unstuck",
+        "third-post"
+    ]
+
+    for slug in expected_slugs:
+        assert slug in posts_by_slug, f"Пост с slug='{slug}' не найден в контексте"
+
+    # Проверяем контент строго по нужным постам
+    # Здесь используем тот текст, который реально задан в conftest.py
+    assert "Текст первого поста" in posts_by_slug["storm-and-wreck"].content
+    assert "Текст второго поста" in posts_by_slug["ship-unstuck"].content
+    assert "Текст третьего поста" in posts_by_slug["third-post"].content
+
+    # Проверка категорий (опционально, но полезно)
+    assert posts_by_slug["storm-and-wreck"].category.slug == "travel"
+    assert posts_by_slug["ship-unstuck"].category.slug == "adventure"
+    assert posts_by_slug["third-post"].category.slug == "city"

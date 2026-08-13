@@ -53,18 +53,20 @@ def posts(django_db_blocker):
         Post.objects.all().delete()
         Category.objects.all().delete()
 
+        # ИСПРАВЛЕНО: name -> title
         cat_travel = Category.objects.create(
-            name="Путешествия", slug="travel"
+            title="Путешествия", slug="travel"
         )
         cat_adventure = Category.objects.create(
-            name="Приключения", slug="adventure"
+            title="Приключения", slug="adventure"
         )
         cat_city = Category.objects.create(
-            name="Город", slug="city"
+            title="Город", slug="city"
         )
 
         p1 = Post.objects.create(
             title="Шторм и крушение",
+            slug="storm-and-wreck",
             content="Текст первого поста",
             created_at=timezone.make_aware(
                 datetime(2025, 1, 1, 10, 0, 0)
@@ -74,6 +76,7 @@ def posts(django_db_blocker):
         )
         p2 = Post.objects.create(
             title="Корабль сняло с мели",
+            slug="ship-unstuck",
             content="Текст второго поста",
             created_at=timezone.make_aware(
                 datetime(2025, 1, 2, 11, 0, 0)
@@ -83,6 +86,7 @@ def posts(django_db_blocker):
         )
         p3 = Post.objects.create(
             title="Третий пост",
+            slug="third-post",
             content="Текст третьего поста",
             created_at=timezone.make_aware(
                 datetime(2025, 1, 3, 12, 0, 0)
@@ -90,4 +94,5 @@ def posts(django_db_blocker):
             is_published=True,
             category=cat_city,
         )
+
     return [p1, p2, p3]
