@@ -16,6 +16,7 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
     is_published = models.BooleanField(default=True)
+    published_at = models.DateTimeField(null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
     )
