@@ -32,7 +32,8 @@ def test_post_list_page_has_posts():
 def test_blog_posts(try_get_url, posts):
     """
     Проверяет логику отображения постов разных категорий.
-    Использует фикстуру 'posts' из conftest.py — она уже создала все тестовые данные.
+    Использует фикстуру 'posts' из conftest.py — она уже создала
+    все тестовые данные.
     Никаких дополнительных create/get_or_create здесь быть не должно.
     """
     url = reverse("blog:post_list")
@@ -54,11 +55,16 @@ def test_blog_posts(try_get_url, posts):
     ]
 
     for slug in expected_slugs:
-        assert slug in posts_by_slug, f"Пост с slug='{slug}' не найден в контексте"
+        assert slug in posts_by_slug, (
+            f"Пост с slug='{slug}' не найден в контексте"
+        )
 
     # Проверяем контент строго по реальным текстам из conftest.py
     first_post = posts_by_slug["storm-and-wreck"]
-    assert "Всю ночь и весь день шёл дождь и дул сильный порывистый ветер" in first_post.content
+    assert (
+        "Всю ночь и весь день шёл дождь и дул сильный "
+        "порывистый ветер"
+    ) in first_post.content
 
     second_post = posts_by_slug["ship-unstuck"]
     assert "После шторма корабль наконец снялся с мели" in second_post.content
