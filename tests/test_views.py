@@ -8,11 +8,10 @@ def test_post_list_page_has_posts():
     """
     Проверяет, что главная страница (/) возвращает статус 200
     и содержит хотя бы один опубликованный пост.
-    Этот тест сам создаёт данные, потому что не зависит от фикстуры posts.
     """
     category = Category.objects.create(title="Путешествия", slug="travel")
 
-    Post.objects.create(
+    post = Post.objects.create(  # <-- присвой переменной
         title="Первый пост",
         slug="first-post",
         content="Текст первого поста",
@@ -26,7 +25,7 @@ def test_post_list_page_has_posts():
     assert response.status_code == 200
 
     html = response.content.decode("utf-8")
-    assert "Первый пост" in html
+    assert post.title in html, f"Заголовок '{post.title}' должен быть в HTML"
 
 
 @pytest.mark.django_db
@@ -48,23 +47,27 @@ def test_blog_posts(try_get_url, posts):
     # Превращаем список постов в словарь по slug для удобной проверки
     posts_by_slug = {p.slug: p for p in posts_in_context}
 
-    # Эти slug должны точно совпадать с теми, что создаёт фикстура posts в conftest.py
     expected_slugs = [
         "storm-and-wreck",
         "ship-unstuck",
-        "third-post"
+        "third-post",
     ]
 
     for slug in expected_slugs:
         assert slug in posts_by_slug, f"Пост с slug='{slug}' не найден в контексте"
 
-    # Проверяем контент строго по нужным постам
-    # Здесь используем тот текст, который реально задан в conftest.py
-    assert "Текст первого поста" in posts_by_slug["storm-and-wreck"].content
-    assert "Текст второго поста" in posts_by_slug["ship-unstuck"].content
-    assert "Текст третьего поста" in posts_by_slug["third-post"].content
+    # Проверяем контент строго по реальным текстам из conftest.py
+    first_post = posts_by_slug["storm-and-wreck"]
+    assert "Всю ночь и весь день шёл дождь и дул сильный порывистый ветер" in first_post.content
 
-    # Проверка категорий (опционально, но полезно)
-    assert posts_by_slug["storm-and-wreck"].category.slug == "travel"
-    assert posts_by_slug["ship-unstuck"].category.slug == "adventure"
-    assert posts_by_slug["third-post"].category.slug == "city"
+    second_post = posts_by_slug["ship-unstuck"]
+    assert "После шторма корабль наконец снялся с мели" in second_post.content
+
+    third_post = posts_by_slug["third-post"]
+    assert "Прогулка по городу в пасмурный день" in third_post.content
+
+    # Проверка категорий (теперь совпадает с conftest.py)
+    assert first_post.category.slug == "travel"
+    assert second_post.category.slug == "adventure"
+    # Третий пост тоже в категории travel — как в conftest.py
+    assert third_post.category.slug == "travel"

@@ -5,7 +5,7 @@ import pytest
 from django.test import Client
 from blog.models import Post, Category
 from datetime import datetime
-import django.utils.timezone as timezone
+from django.utils import timezone
 
 # ---------------------------------------------------------
 # 1. ЖЁСТКАЯ НАСТРОЙКА ПУТИ К ПРОЕКТУ
@@ -50,49 +50,39 @@ def try_get_url(client):
 @pytest.fixture(scope="function")
 def posts(django_db_blocker):
     with django_db_blocker.unblock():
+        # Очищаем данные перед каждым тестом
         Post.objects.all().delete()
         Category.objects.all().delete()
 
-        # ИСПРАВЛЕНО: name -> title
-        cat_travel = Category.objects.create(
-            title="Путешествия", slug="travel"
-        )
-        cat_adventure = Category.objects.create(
-            title="Приключения", slug="adventure"
-        )
-        cat_city = Category.objects.create(
-            title="Город", slug="city"
-        )
+        # Создаём категории
+        cat_travel = Category.objects.create(title="Путешествия", slug="travel")
+        cat_adventure = Category.objects.create(title="Приключения", slug="adventure")
 
-        p1 = Post.objects.create(
+        # Создаём посты и сразу сохраняем их в переменные
+        post1 = Post.objects.create(
             title="Шторм и крушение",
             slug="storm-and-wreck",
-            content="Текст первого поста",
-            created_at=timezone.make_aware(
-                datetime(2025, 1, 1, 10, 0, 0)
-            ),
-            is_published=True,
+            content="Всю ночь и весь день шёл дождь и дул сильный порывистый ветер. Корабль за ночь разбило в щепки.",
             category=cat_travel,
+            published_at=timezone.now(),
+            is_published=True,
         )
-        p2 = Post.objects.create(
-            title="Корабль сняло с мели",
+        post2 = Post.objects.create(
+            title="Корабль снялся с мели",
             slug="ship-unstuck",
-            content="Текст второго поста",
-            created_at=timezone.make_aware(
-                datetime(2025, 1, 2, 11, 0, 0)
-            ),
-            is_published=True,
+            content="После шторма корабль наконец снялся с мели, и команда смогла продолжить путь.",
             category=cat_adventure,
-        )
-        p3 = Post.objects.create(
-            title="Третий пост",
-            slug="third-post",
-            content="Текст третьего поста",
-            created_at=timezone.make_aware(
-                datetime(2025, 1, 3, 12, 0, 0)
-            ),
+            published_at=timezone.now(),
             is_published=True,
-            category=cat_city,
+        )
+        post3 = Post.objects.create(
+            title="Третий пост: город",
+            slug="third-post",
+            content="Прогулка по городу в пасмурный день: старые дома, узкие улочки и запах дождя.",
+            category=cat_travel,
+            published_at=timezone.now(),
+            is_published=True,
         )
 
-    return [p1, p2, p3]
+        # Теперь переменные post1, post2, post3 существуют — можно возвращать
+        return [post1, post2, post3]
