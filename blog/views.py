@@ -14,7 +14,15 @@ def post_detail(request, pk):
         raise Http404("Пост не найден")
     return render(request, "blog/post_detail.html", {"post": post})
 
+
 def category_posts(request, slug):
     category = get_object_or_404(Category, slug=slug)
-    posts = category.posts.all()  # или Post.objects.filter(category=category)
-    return render(request, 'blog/category.html', {'category': category, 'posts': posts})
+    posts = category.posts.all()
+    return render(
+        request,
+        "blog/category.html",
+        {
+            "category": category,
+            "posts": posts,
+        },
+    )
