@@ -1,27 +1,12 @@
-import os
-import sys
-import django
 import pytest
 from django.test import Client
 from blog.models import Post, Category
-from datetime import datetime
 from django.utils import timezone
-
-# ---------------------------------------------------------
-# 1. ЖЁСТКАЯ НАСТРОЙКА ПУТИ К ПРОЕКТУ
-# ---------------------------------------------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-if BASE_DIR not in sys.path:
-    sys.path.insert(0, BASE_DIR)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blogicum.settings")
-django.setup()
-# ---------------------------------------------------------
 
 
 @pytest.fixture
 def root_dir():
+    import os
     return os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
@@ -55,14 +40,23 @@ def posts(django_db_blocker):
         Category.objects.all().delete()
 
         # Создаём категории
-        cat_travel = Category.objects.create(title="Путешествия", slug="travel")
-        cat_adventure = Category.objects.create(title="Приключения", slug="adventure")
+        cat_travel = Category.objects.create(
+            title="Путешествия",
+            slug="travel"
+        )
+        cat_adventure = Category.objects.create(
+            title="Приключения",
+            slug="adventure"
+        )
 
-        # Создаём посты и сразу сохраняем их в переменные
+        # Создаём посты
         post1 = Post.objects.create(
             title="Шторм и крушение",
             slug="storm-and-wreck",
-            content="Всю ночь и весь день шёл дождь и дул сильный порывистый ветер. Корабль за ночь разбило в щепки.",
+            content=(
+                "Всю ночь и весь день шёл дождь и дул сильный "
+                "порывистый ветер. Корабль за ночь разбило в щепки."
+            ),
             category=cat_travel,
             published_at=timezone.now(),
             is_published=True,
@@ -70,7 +64,10 @@ def posts(django_db_blocker):
         post2 = Post.objects.create(
             title="Корабль снялся с мели",
             slug="ship-unstuck",
-            content="После шторма корабль наконец снялся с мели, и команда смогла продолжить путь.",
+            content=(
+                "После шторма корабль наконец снялся с мели, "
+                "и команда смогла продолжить путь."
+            ),
             category=cat_adventure,
             published_at=timezone.now(),
             is_published=True,
@@ -78,11 +75,13 @@ def posts(django_db_blocker):
         post3 = Post.objects.create(
             title="Третий пост: город",
             slug="third-post",
-            content="Прогулка по городу в пасмурный день: старые дома, узкие улочки и запах дождя.",
+            content=(
+                "Прогулка по городу в пасмурный день: "
+                "старые дома, узкие улочки и запах дождя."
+            ),
             category=cat_travel,
             published_at=timezone.now(),
             is_published=True,
         )
 
-        # Теперь переменные post1, post2, post3 существуют — можно возвращать
         return [post1, post2, post3]
