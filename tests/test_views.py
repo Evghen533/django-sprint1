@@ -36,7 +36,7 @@ def test_blog_posts(try_get_url, posts):
     все тестовые данные.
     Никаких дополнительных create/get_or_create здесь быть не должно.
     """
-    url = reverse("blog:post_list")
+    url = reverse("blog:index")
     response = try_get_url(url)
 
     assert response.status_code == 200

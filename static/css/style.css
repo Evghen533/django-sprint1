@@ -1,17 +1,161 @@
+/* Базовые настройки */
 body {
-  background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f5f7;
+    color: #333;
+    line-height: 1.6;
 }
 
-.card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* Шапка сайта (светло-голубая полоса) */
+header {
+    background-color: #e3f2fd;
+    border-bottom: 1px solid #ccc;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+.logo {
+    font-weight: 700;
+    color: #1976d2;
+    font-size: 1.2rem;
+    text-decoration: none;
 }
 
-.content p {
-  line-height: 1.7;
-  margin-bottom: 1rem;
+/* Меню в шапке */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Активная кнопка в меню (синяя заливка) */
+nav ul li a.active {
+    background-color: #1976d2;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+/* Основной контейнер */
+main {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Заголовок "Лента записей" */
+h1 {
+    color: #222;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+/* Блок поста (теперь это аккуратная карточка) */
+.post-item {
+    padding: 20px;             /* Внутренний отступ, чтобы текст не прилипал к краям */
+    background-color: #ffffff; /* Белый фон карточки */
+    border-radius: 8px;        /* Скругление углов */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Легкая тень для объема */
+}
+
+.post-item ul {
+    list-style: none; /* Убирает точки */
+    padding: 0;       /* Убирает отступ слева */
+    margin: 0;
+}
+
+.post-item ul li {
+    margin-bottom: 5px; /* Добавляет воздух между строками */
+    color: #555;       /* Делает текст чуть темнее/серее для красоты */
+}
+
+/* Список метаданных (Место, Дата, Категория) */
+.post-meta ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.post-meta li {
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.post-meta strong {
+    color: #333;
+}
+
+/* Ссылка категории (синяя, как на скриншоте) */
+.post-meta a {
+    color: #1976d2;
+    text-decoration: none;
+}
+
+.post-meta a:hover {
+    text-decoration: underline;
+}
+
+/* Текст анонса */
+.post-preview {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Ссылка "Читать полный текст" (синяя, подчеркнутая) */
+.read-more-link {
+    color: #1976d2;
+    text-decoration: underline;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.read-more-link:hover {
+    color: #0d47a1;
+    text-decoration: none;
+}
+
+/* Надежный разделитель: просто серая полоска */
+.post-separator {
+    height: 4px;               /* Было 1px, стало 4px — теперь точно видно */
+    background-color: #e0e0e0; /* Приятный светло-серый цвет */
+    margin: 40px 0;            /* Большой отступ сверху и снизу линии */
+    width: 100%;
+    box-sizing: border-box;    /* Чтобы ширина считалась корректно */
+}
+
+/* Футер */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 20px;
 }

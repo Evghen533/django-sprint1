@@ -3,6 +3,7 @@ autopep8==2.3.2
 black==26.5.1
 click==8.4.2
 colorama==0.4.6
+coverage==7.15.4
 Django==5.1.1
 flake8==7.1.1
 flake8-docstrings==1.7.0
@@ -20,10 +21,10 @@ pycodestyle==2.12.1
 pydocstyle==6.3.0
 pyflakes==3.2.0
 pytest==8.3.3
+pytest-cov==7.1.0
 pytest-django==4.9.0
 pytest-pythonpath==0.7.3
 pytokens==0.4.1
 snowballstemmer==3.1.1
 sqlparse==0.5.5
 tzdata==2026.3
-pytest-cov>=4.1.0

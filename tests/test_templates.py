@@ -8,7 +8,9 @@ def test_post_detail_pages(posts, try_get_url):
     for i, post in enumerate(posts):
         url = reverse("blog:post_detail", args=[post.pk])
         response = try_get_url(url)
-        assert response.status_code == 200, f"Страница поста {post.pk} должна возвращать 200"
+        assert response.status_code == 200, (
+            f"Страница поста {post.pk} должна возвращать 200"
+        )
         assert response.context is not None
         assert response.context.get("post") is not None
         assert response.context["post"].pk == post.pk
@@ -22,18 +24,17 @@ def test_post_detail_pages(posts, try_get_url):
 
 @pytest.mark.django_db
 def test_post_list(posts, try_get_url):
-    url = reverse("blog:post_list")
+    url = reverse("blog:index")
     response = try_get_url(url)
     assert response.status_code == 200
 
     assert response.context is not None
     assert "posts" in response.context
-
     context_posts = response.context["posts"]
-    # Сравниваем количество: на главной могут быть не все посты (только опубликованные)
     expected_count = sum(1 for p in posts if p.is_published)
     assert len(context_posts) == expected_count, (
-        f"Ожидалось {expected_count} постов на главной, но получено {len(context_posts)}"
+        f"Ожидалось {expected_count} постов на главной, "
+        f"но получено {len(context_posts)}"
     )
 
     context_titles = [p.title for p in context_posts]

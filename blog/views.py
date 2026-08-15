@@ -1,25 +1,60 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Post, Category
+from django.shortcuts import render
 
+posts = [
+    {
+        'id': 1,
+        'title': 'Крушение корабля',
+        'date': '30 сентября 1659 года',
+        'location': 'Остров отчаяния',
+        'category': 'travel',
+        'category_title': 'Путешествия',
+        'text': '''Наш корабль, застигнутый в открытом море
+                страшным штормом, потерпел крушение.
+                Весь экипаж, кроме меня, утонул; я же,
+                несчастный Робинзон Крузо, был выброшен
+                полумёртвым на берег этого проклятого острова,
+                который назвал островом Отчаяния.''',
+    },
+    {
+        'id': 2,
+        'title': 'Пробуждение на мели',
+        'date': '1 октября 1659 года',
+        'location': 'Остров отчаяния',
+        'category': 'not-my-day',
+        'category_title': 'Не мой день',
+        'text': '''Проснувшись поутру, я увидел, что наш корабль сняло
+                с мели приливом и пригнало гораздо ближе к берегу.
+                Это подало мне надежду, что, когда ветер стихнет,
+                мне удастся добраться до корабля и запастись едой и
+                другими необходимыми вещами. Я немного приободрился,
+                хотя печаль о погибших товарищах не покидала меня.
+                Мне всё думалось, что, останься мы на корабле, мы
+                непременно спаслись бы. Теперь из его обломков мы могли бы
+                построить баркас, на котором и выбрались бы из этого
+                гиблого места.''',
+    },
+    {
+        'id': 3,
+        'title': 'Дождь и ветер',
+        'date': '25 октября 1659 года',
+        'location': 'Остров отчаяния',
+        'category': 'not-my-day',
+        'category_title': 'Не мой день',
+        'text': '''Всю ночь и весь день шёл дождь и дул сильный
+                порывистый ветер. 25 октября.  Корабль за ночь разбило
+                в щепки; на том месте, где он стоял, торчат какие-то
+                жалкие обломки,  да и те видны только во время отлива.
+                Весь этот день я хлопотал  около вещей: укрывал и
+                укутывал их, чтобы не испортились от дождя.''',
+    },
+]
 
-def post_list(request):
-    posts = Post.objects.filter(is_published=True).order_by('-published_at')
-    return render(request, 'post_list.html', {'posts': posts})
+def index(request):
+    return render(request, 'index.html', {'posts': posts})
 
+def post_detail(request, id):
+    post = next((p for p in posts if p['id'] == id), None)
+    return render(request, 'detail.html', {'post': post})
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'post_detail.html', {'post': post})
-
-
-def category_posts(request, slug):
-    category = get_object_or_404(Category, slug=slug)
-    posts = category.posts.all()
-    return render(
-        request,
-        "blog/category.html",
-        {
-            "category": category,
-            "posts": posts,
-        },
-    )
+def category_posts(request, category_slug):
+    return render(request, 'category.html', {'category_slug': category_slug})

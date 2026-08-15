@@ -21,7 +21,7 @@ def test_post_detail_page_content(try_get_url, posts):
 
 @pytest.mark.django_db
 def test_post_list_page_has_posts(try_get_url, posts):
-    url = reverse("blog:post_list")
+    url = reverse("blog:index")
     response = try_get_url(url)
 
     assert response.status_code == 200, f"URL {url} должен возвращать 200"
