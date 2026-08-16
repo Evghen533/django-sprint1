@@ -18,6 +18,4 @@ def test_blog_url_names(name, args):
             f"и app_name='blog'. Ошибка: {e}"
         ) from e
     except Exception as e:
-        raise AssertionError(
-            f"При проверке URL '{name}' возникла ошибка: {e}"
-        ) from e
+        raise AssertionError(f"При проверке URL '{name}' возникла ошибка: {e}") from e

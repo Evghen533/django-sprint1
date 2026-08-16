@@ -1,4 +1,5 @@
 import os
+
 """
 Django settings for blogicum project.
 
@@ -10,9 +11,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Секретный ключ для разработки
-SECRET_KEY = (
-    "django-insecure-qcveme$b11^tf=9ivulvvzxcaj0+b(u2y*l-_dg$i^8m13)6a2"
-)
+SECRET_KEY = "django-insecure-qcveme$b11^tf=9ivulvvzxcaj0+b(u2y*l-_dg$i^8m13)6a2"
 
 # Режим отладки
 DEBUG = True

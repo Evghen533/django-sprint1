@@ -20,8 +20,9 @@ def test_post_list_page_has_posts():
     )
 
     from django.test import Client
+
     client = Client()
-    response = client.get('/')
+    response = client.get("/")
     assert response.status_code == 200
 
     html = response.content.decode("utf-8")
@@ -55,15 +56,12 @@ def test_blog_posts(try_get_url, posts):
     ]
 
     for slug in expected_slugs:
-        assert slug in posts_by_slug, (
-            f"Пост с slug='{slug}' не найден в контексте"
-        )
+        assert slug in posts_by_slug, f"Пост с slug='{slug}' не найден в контексте"
 
     # Проверяем контент строго по реальным текстам из conftest.py
     first_post = posts_by_slug["storm-and-wreck"]
     assert (
-        "Всю ночь и весь день шёл дождь и дул сильный "
-        "порывистый ветер"
+        "Всю ночь и весь день шёл дождь и дул сильный " "порывистый ветер"
     ) in first_post.content
 
     second_post = posts_by_slug["ship-unstuck"]

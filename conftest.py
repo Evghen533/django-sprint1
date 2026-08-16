@@ -7,6 +7,7 @@ from django.utils import timezone
 @pytest.fixture
 def root_dir():
     import os
+
     return os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
@@ -29,6 +30,7 @@ def try_get_url(client):
         raise AssertionError(
             f"Не удалось загрузить `{url}`: статус {response.status_code}"
         )
+
     return _try_get_url
 
 
@@ -40,14 +42,8 @@ def posts(django_db_blocker):
         Category.objects.all().delete()
 
         # Создаём категории
-        cat_travel = Category.objects.create(
-            title="Путешествия",
-            slug="travel"
-        )
-        cat_adventure = Category.objects.create(
-            title="Приключения",
-            slug="adventure"
-        )
+        cat_travel = Category.objects.create(title="Путешествия", slug="travel")
+        cat_adventure = Category.objects.create(title="Приключения", slug="adventure")
 
         # Создаём посты
         post1 = Post.objects.create(

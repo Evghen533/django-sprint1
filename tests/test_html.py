@@ -28,6 +28,6 @@ def test_post_list_page_has_posts(try_get_url, posts):
 
     html = response.content.decode("utf-8")
     for post in posts:
-        assert post.title in html, (
-            f"Заголовок поста '{post.title}' не найден в HTML страницы."
-        )
+        assert (
+            post.title in html
+        ), f"Заголовок поста '{post.title}' не найден в HTML страницы."

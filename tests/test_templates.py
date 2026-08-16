@@ -8,18 +8,18 @@ def test_post_detail_pages(posts, try_get_url):
     for i, post in enumerate(posts):
         url = reverse("blog:post_detail", args=[post.pk])
         response = try_get_url(url)
-        assert response.status_code == 200, (
-            f"Страница поста {post.pk} должна возвращать 200"
-        )
+        assert (
+            response.status_code == 200
+        ), f"Страница поста {post.pk} должна возвращать 200"
         assert response.context is not None
         assert response.context.get("post") is not None
         assert response.context["post"].pk == post.pk
         assert response.context["post"].title == post.title
 
         content = response.content.decode("utf-8")
-        assert post.title in content, (
-            f"Заголовок поста '{post.title}' не найден в HTML."
-        )
+        assert (
+            post.title in content
+        ), f"Заголовок поста '{post.title}' не найден в HTML."
 
 
 @pytest.mark.django_db
@@ -40,11 +40,11 @@ def test_post_list(posts, try_get_url):
     context_titles = [p.title for p in context_posts]
     for post in posts:
         if post.is_published:
-            assert post.title in context_titles, (
-                f"Пост '{post.title}' опубликован, но не найден в контексте."
-            )
+            assert (
+                post.title in context_titles
+            ), f"Пост '{post.title}' опубликован, но не найден в контексте."
 
     content = response.content.decode("utf-8")
-    assert any(p.title in content for p in posts if p.is_published), (
-        "Ни один из опубликованных постов не найден в HTML главной страницы."
-    )
+    assert any(
+        p.title in content for p in posts if p.is_published
+    ), "Ни один из опубликованных постов не найден в HTML главной страницы."
