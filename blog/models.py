@@ -27,7 +27,6 @@ class Post(models.Model):
     )
     created_at = models.DateTimeField(default=timezone.now)
     is_published = models.BooleanField(default=True)
-    published_at = models.DateTimeField(null=True, blank=True)
     image = models.ImageField(upload_to="posts/", blank=True, null=True)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
