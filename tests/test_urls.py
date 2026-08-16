@@ -5,7 +5,7 @@ import pytest
 @pytest.mark.parametrize(
     "name, args",
     [
-        ("blog:post_list", []),
+        ("blog:index", []),
         ("blog:post_detail", [1]),
     ],
 )

@@ -42,8 +42,11 @@ def posts(django_db_blocker):
         Category.objects.all().delete()
 
         # Создаём категории
-        cat_travel = Category.objects.create(title="Путешествия", slug="travel")
-        cat_adventure = Category.objects.create(title="Приключения", slug="adventure")
+        cat_travel = Category.objects.create(name="Путешествия", slug="travel")
+        cat_adventure = Category.objects.create(name="Приключения", slug="adventure")
+        cat_city = Category.objects.create(name="Город", slug="city")
+
+        now = timezone.now()
 
         # Создаём посты
         post1 = Post.objects.create(
@@ -53,6 +56,8 @@ def posts(django_db_blocker):
                 "Всю ночь и весь день шёл дождь и дул сильный "
                 "порывистый ветер. Корабль за ночь разбило в щепки."
             ),
+            date=now.date(),
+            location="Остров отчаяния",
             category=cat_travel,
             published_at=timezone.now(),
             is_published=True,
@@ -64,6 +69,8 @@ def posts(django_db_blocker):
                 "После шторма корабль наконец снялся с мели, "
                 "и команда смогла продолжить путь."
             ),
+            date=now.date(),
+            location="Берег острова",
             category=cat_adventure,
             published_at=timezone.now(),
             is_published=True,
@@ -75,6 +82,8 @@ def posts(django_db_blocker):
                 "Прогулка по городу в пасмурный день: "
                 "старые дома, узкие улочки и запах дождя."
             ),
+            date=now.date(),
+            location="Город",
             category=cat_travel,
             published_at=timezone.now(),
             is_published=True,

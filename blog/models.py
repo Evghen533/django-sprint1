@@ -3,11 +3,11 @@ from django.utils import timezone
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Post(models.Model):
@@ -17,9 +17,8 @@ class Post(models.Model):
     )
     slug = models.SlugField(unique=True)
     content = models.TextField()
-    date = models.CharField(
-        "Дата", max_length=100, help_text="Например: 30 сентября 1659 года"
-    )
+    # ИСПРАВЛЕНО: было CharField, стало DateField
+    date = models.DateField("Дата")
     location = models.CharField(
         "Место", max_length=200, help_text="Например: Остров отчаянья"
     )

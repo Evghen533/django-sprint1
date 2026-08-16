@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from .models import Post
 
 posts = [
     {
@@ -51,13 +52,41 @@ posts = [
 
 
 def index(request):
-    return render(request, "index.html", {"posts": posts})
+    posts = Post.objects.filter(is_published=True).select_related("category")
+    return render(request, "blog/index.html", {"posts": posts})
 
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk, is_published=True)
 
-def post_detail(request, id):
-    post = next((p for p in posts if p["id"] == id), None)
-    return render(request, "detail.html", {"post": post})
+    previous_post = (
+        Post.objects.filter(is_published=True, pk__lt=post.pk)
+        .order_by("-pk")
+        .first()
+    )
 
+    next_post = (
+        Post.objects.filter(is_published=True, pk__gt=post.pk)
+        .order_by("pk")
+        .first()
+    )
+
+    context = {
+        "post": post,
+        "previous_post": previous_post,
+        "next_post": next_post,
+    }
+    return render(request, "blog/post_detail.html", context)
 
 def category_posts(request, category_slug):
-    return render(request, "category.html", {"category_slug": category_slug})
+    posts = (
+        Post.objects.filter(
+            is_published=True,
+            category__slug=category_slug
+        )
+        .select_related("category")
+    )
+    return render(
+        request,
+        "blog/category_posts.html",
+        {"posts": posts, "category_slug": category_slug}
+    )

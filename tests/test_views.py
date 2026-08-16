@@ -1,3 +1,4 @@
+from datetime import date
 import pytest
 from django.urls import reverse
 from blog.models import Category, Post
@@ -9,12 +10,14 @@ def test_post_list_page_has_posts():
     Проверяет, что главная страница (/) возвращает статус 200
     и содержит хотя бы один опубликованный пост.
     """
-    category = Category.objects.create(title="Путешествия", slug="travel")
+    category = Category.objects.create(name="Путешествия", slug="travel")
 
     post = Post.objects.create(  # <-- присвой переменной
         title="Первый пост",
         slug="first-post",
         content="Текст первого поста",
+        date=date.today(),
+        location="",
         category=category,
         is_published=True,
     )
@@ -56,7 +59,8 @@ def test_blog_posts(try_get_url, posts):
     ]
 
     for slug in expected_slugs:
-        assert slug in posts_by_slug, f"Пост с slug='{slug}' не найден в контексте"
+        post = posts_by_slug[slug]
+        assert post.title in response.content.decode(), f"Заголовок '{post.title}' не найден в HTML"
 
     # Проверяем контент строго по реальным текстам из conftest.py
     first_post = posts_by_slug["storm-and-wreck"]
