@@ -55,6 +55,7 @@ def index(request):
     posts = Post.objects.filter(is_published=True).select_related("category")
     return render(request, "blog/index.html", {"posts": posts})
 
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk, is_published=True)
 
@@ -76,6 +77,7 @@ def post_detail(request, pk):
         "next_post": next_post,
     }
     return render(request, "blog/post_detail.html", context)
+
 
 def category_posts(request, category_slug):
     posts = (
