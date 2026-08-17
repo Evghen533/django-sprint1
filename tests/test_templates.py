@@ -4,10 +4,10 @@ from django.urls import reverse
 
 
 @pytest.mark.django_db
-def test_post_detail_pages(posts, try_get_url):
+def test_post_detail_pages(client, posts):
     for i, post in enumerate(posts):
         url = reverse("blog:post_detail", args=[post.pk])
-        response = try_get_url(url)
+        response = client.get(url)
         assert (
             response.status_code == 200
         ), f"Страница поста {post.pk} должна возвращать 200"
@@ -23,9 +23,9 @@ def test_post_detail_pages(posts, try_get_url):
 
 
 @pytest.mark.django_db
-def test_post_list(posts, try_get_url):
+def test_post_list(client, posts):
     url = reverse("blog:index")
-    response = try_get_url(url)
+    response = client.get(url)
     assert response.status_code == 200
 
     assert response.context is not None

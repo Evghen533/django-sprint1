@@ -11,4 +11,5 @@ urlpatterns = [
         views.category_posts,
         name="category_posts",
     ),
+    path("api/posts/", views.blog_posts, name="blog_posts"),
 ]
