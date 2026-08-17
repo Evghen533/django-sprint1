@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post
+from .models import Post, Category
 
 posts = [
     {
@@ -80,15 +80,16 @@ def post_detail(request, pk):
 
 
 def category_posts(request, category_slug):
+    category = get_object_or_404(Category, slug=category_slug)
     posts = (
         Post.objects.filter(
             is_published=True,
-            category__slug=category_slug
+            category=category
         )
         .select_related("category")
     )
     return render(
         request,
-        "blog/category_posts.html",
-        {"posts": posts, "category_slug": category_slug}
+        "blog/category.html",
+        {"posts": posts, "category": category}
     )

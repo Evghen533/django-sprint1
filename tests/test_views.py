@@ -23,29 +23,24 @@ def test_post_list_page_has_posts(try_get_url, posts):
 
 @pytest.mark.django_db
 def test_blog_posts(try_get_url, posts):
-    """
-    Проверяет логику отображения постов на главной странице.
-    Использует фикстуру 'posts' — никаких ручных create/get_or_create здесь быть не должно.
-    Не проверяет жёстко тексты внутри content, только заголовки и наличие в контексте/HTML.
-    """
-    url = reverse("blog:index")
-    response = try_get_url(url)
+    response = try_get_url("/")
     assert response.status_code == 200
 
+    # Проверяем, что view передаёт список постов в контекст
     posts_in_context = response.context.get("posts")
-    assert posts_in_context is not None
-    assert len(posts_in_context) >= 1, "На главной должно быть хотя бы 1 опубликованный пост"
+    assert posts_in_context is not None, "В контексте страницы нет переменной posts"
+    assert len(posts_in_context) >= 3, "На странице должно быть как минимум 3 поста"
 
-    # Собираем список заголовков из контекста
-    context_titles = [p.title for p in posts_in_context]
-
-    # Проверяем, что все опубликованные посты из фикстуры есть в контексте
-    for post in posts:
-        if post.is_published:
-            assert post.title in context_titles, f"Пост '{post.title}' опубликован, но не найден в контексте"
-
-    # Проверяем наличие заголовков в HTML
     html = response.content.decode("utf-8")
+
+    # Проверяем, что все опубликованные посты из фикстуры есть в контексте и в HTML
     for post in posts:
         if post.is_published:
-            assert post.title in html, f"Заголовок '{post.title}' не найден в HTML"
+            assert post.title in [p.title for p in posts_in_context], \
+                f"Пост '{post.title}' опубликован, но не найден в контексте"
+            assert post.title in html,  \
+                f"Заголовок '{post.title}' не найден в HTML страницы"
+
+    # Дополнительная страховка: все посты на странице должны быть опубликованными
+    for p in posts_in_context:
+        assert p.is_published is True, f"В списке постов на странице оказался неопубликованный пост: {p.title}"
