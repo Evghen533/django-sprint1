@@ -43,10 +43,12 @@ posts = [
     },
 ]
 
+
 def index(request):
     # Сортируем в обратном порядке (новые первыми), как требует тест
     sorted_posts = sorted(posts, key=lambda p: p["id"], reverse=True)
     return render(request, 'blog/index.html', {'posts': sorted_posts})
+
 
 def post_detail(request, id):
     post = next((p for p in posts if p["id"] == id), None)
@@ -54,6 +56,7 @@ def post_detail(request, id):
         # Если поста нет — всё равно передаём пустой контекст, но с явным None
         return render(request, 'blog/detail.html', {'post': None})
     return render(request, 'blog/detail.html', {'post': post})
+
 
 def category_posts(request, category_slug):
     # Фильтруем посты по категории и сортируем в обратном порядке
