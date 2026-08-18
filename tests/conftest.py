@@ -1,50 +1,117 @@
+import os
+from pathlib import Path
+
 import pytest
-from datetime import date
-from blog.models import Post, Category
+from django.template import TemplateDoesNotExist
 
-@pytest.fixture(scope="function")
+
+@pytest.fixture()
+def urlpatterns(imports_by_full_name):
+    urlpattern_paths = [
+        'pages.urls.urlpatterns', 'blog.urls.urlpatterns']
+    urlpattern_vals = [imports_by_full_name[p] for p in urlpattern_paths]
+    expected_names = [
+        ('about', 'rules'),
+        ('index', 'post_detail', 'category_posts'),
+    ]
+    expected_views = [
+        ('pages.views.about', 'pages.views.rules'),
+        ('blog.views.index', 'blog.views.post_detail',
+         'blog.views.category_posts'),
+    ]
+    return zip(
+        urlpattern_paths, urlpattern_vals, expected_names, expected_views)
+
+
+@pytest.fixture()
+def settings_app_name():
+    return 'blogicum'
+
+
+@pytest.fixture()
+def root_dir():
+    return str(Path(__file__).parent.parent)
+
+
+@pytest.fixture()
+def project_dirname():
+    return 'blogicum'
+
+
+@pytest.fixture()
 def posts():
-    cat_travel = Category.objects.create(name="Путешествия", slug="travel")
-    cat_not_my_day = Category.objects.create(name="Не мой день", slug="not-my-day")
+    return EXPECTED_POSTS
 
-    post1 = Post.objects.create(
-        title="Крушение корабля",
-        slug="wreck",
-        content="""Наш корабль, застигнутый в открытом море
+
+EXPECTED_POSTS = [
+    {
+        'id': 0,
+        'location': 'Остров отчаянья',
+        'date': '30 сентября 1659 года',
+        'category': 'travel',
+        'text': '''Наш корабль, застигнутый в открытом море
                 страшным штормом, потерпел крушение.
                 Весь экипаж, кроме меня, утонул; я же,
                 несчастный Робинзон Крузо, был выброшен
                 полумёртвым на берег этого проклятого острова,
-                который назвал островом Отчаяния.""",
-        date=date(1659, 9, 30),
-        location="Остров отчаянья",
-        category=cat_travel,
-        is_published=True,
-    )
-    post2 = Post.objects.create(
-        title="Пробуждение на мели",
-        slug="unstuck",
-        content="""Проснувшись поутру, я увидел, что наш корабль сняло
+                который назвал островом Отчаяния.''',
+    },
+    {
+        'id': 1,
+        'location': 'Остров отчаянья',
+        'date': '1 октября 1659 года',
+        'category': 'not-my-day',
+        'text': '''Проснувшись поутру, я увидел, что наш корабль сняло
                 с мели приливом и пригнало гораздо ближе к берегу.
                 Это подало мне надежду, что, когда ветер стихнет,
                 мне удастся добраться до корабля и запастись едой и
-                другими необходимыми вещами.""",
-        date=date(1659, 10, 1),
-        location="Остров отчаянья",
-        category=cat_not_my_day,
-        is_published=True,
-    )
-    post3 = Post.objects.create(
-        title="Дождь и ветер",
-        slug="rain-and-wind",
-        content="""Всю ночь и весь день шёл дождь и дул сильный
-                порывистый ветер. 25 октября. Корабль за ночь разбило
-                в щепки. Весь этот день я хлопотал около вещей: укрывал
-                и укутывал их, чтобы не испортились от дождя.""",
-        date=date(1659, 10, 25),
-        location="Остров отчаянья",
-        category=cat_not_my_day,
-        is_published=True,
-    )
+                другими необходимыми вещами. Я немного приободрился,
+                хотя печаль о погибших товарищах не покидала меня.
+                Мне всё думалось, что, останься мы на корабле, мы
+                непременно спаслись бы. Теперь из его обломков мы могли бы
+                построить баркас, на котором и выбрались бы из этого
+                гиблого места.''',
+    },
+    {
+        'id': 2,
+        'location': 'Остров отчаянья',
+        'date': '25 октября 1659 года',
+        'category': 'not-my-day',
+        'text': '''Всю ночь и весь день шёл дождь и дул сильный
+                порывистый ветер. 25 октября.  Корабль за ночь разбило
+                в щепки; на том месте, где он стоял, торчат какие-то
+                жалкие обломки,  да и те видны только во время отлива.
+                Весь этот день я хлопотал  около вещей: укрывал и
+                укутывал их, чтобы не испортились от дождя.''',
+    },
+]
 
-    return [post1, post2, post3]
+
+def try_get_url(client, url: str):
+    try:
+        response = client.get(url)
+    except TemplateDoesNotExist as e:
+        raise AssertionError(
+            f'При загрузке страницы по адресу `{url}` возникла ошибка. '
+            'Убедитесь, что указанный для страницы шаблон существует '
+            'и находится в правильной директории.'
+        ) from e
+    except TypeError as e:
+        raise AssertionError(
+            f'При загрузке страницы по адресу `{url}` '
+            'возникла ошибка TypeError. '
+            'Убедитесь, что используете Path Converter '
+            'для приведения параметра строки запроса к нужному типу.'
+        ) from e
+    except Exception as e:
+        raise AssertionError(
+            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка:'
+            f' {e}'
+        ) from e
+    else:
+        if response.status_code < 300:
+            return response
+        raise AssertionError(
+            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка:'
+            f' {response}'
+        )

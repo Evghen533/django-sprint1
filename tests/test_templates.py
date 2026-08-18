@@ -1,50 +1,61 @@
-# tests/test_templates.py
+import re
+
 import pytest
-from django.urls import reverse
+from pytest_django.asserts import assertTemplateUsed
+
+from tests.conftest import try_get_url
 
 
-@pytest.mark.django_db
-def test_post_detail_pages(client, posts):
-    for i, post in enumerate(posts):
-        url = reverse("blog:post_detail", args=[post.pk])
-        response = client.get(url)
-        assert (
-            response.status_code == 200
-        ), f"Страница поста {post.pk} должна возвращать 200"
-        assert response.context is not None
-        assert response.context.get("post") is not None
-        assert response.context["post"].pk == post.pk
-        assert response.context["post"].title == post.title
+@pytest.mark.parametrize(
+    'url, template', [
+        ('', 'blog/index.html'),
+        ('posts/0/', 'blog/detail.html'),
+        ('posts/1/', 'blog/detail.html'),
+        ('posts/2/', 'blog/detail.html'),
+        ('category/category_slug/', 'blog/category.html'),
+        ('pages/about/', 'pages/about.html'),
+        ('pages/rules/', 'pages/rules.html'),
+    ]
+)
+def test_page_templates(client, url, template):
+    url = f'/{url}' if url else '/'
+    response = try_get_url(client, url)
+    assertTemplateUsed(response, template, msg_prefix=(
+        f'Убедитесь, что для отображения страницы `{url}` используется '
+        f'шаблон `{template}`.'
+    ))
 
-        content = response.content.decode("utf-8")
-        assert (
-            post.title in content
-        ), f"Заголовок поста '{post.title}' не найден в HTML."
 
-
-@pytest.mark.django_db
-def test_post_list(client, posts):
-    url = reverse("blog:index")
-    response = client.get(url)
-    assert response.status_code == 200
-
-    assert response.context is not None
-    assert "posts" in response.context
-    context_posts = response.context["posts"]
-    expected_count = sum(1 for p in posts if p.is_published)
-    assert len(context_posts) == expected_count, (
-        f"Ожидалось {expected_count} постов на главной, "
-        f"но получено {len(context_posts)}"
+@pytest.mark.parametrize('post_id', (0, 1, 2))
+def test_post_detail(post_id, client, posts):
+    url = f'/posts/{post_id}/'
+    response = try_get_url(client, url)
+    assert response.context is not None, (
+        'Убедитесь, что в шаблон страницы с адресом `posts/<int:pk>/` '
+        'передаётся словарь контекста.'
+    )
+    assert isinstance(response.context.get('post'), dict), (
+        'Убедитесь, что в словарь контекста для страницы `posts/<int:pk>/` '
+        'по ключу `post` передаётся непустой словарь.'
+    )
+    assert posts[post_id] == response.context['post'], (
+        f'Убедитесь, что в словаре контекста для страницы `posts/{post_id}/` '
+        f'под ключом `post` передаётся словарь с `"id": '
+        f'{post_id}` из списка `posts`.'
     )
 
-    context_titles = [p.title for p in context_posts]
-    for post in posts:
-        if post.is_published:
-            assert (
-                post.title in context_titles
-            ), f"Пост '{post.title}' опубликован, но не найден в контексте."
 
-    content = response.content.decode("utf-8")
-    assert any(
-        p.title in content for p in posts if p.is_published
-    ), "Ни один из опубликованных постов не найден в HTML главной страницы."
+def test_post_list(client, posts):
+    url = '/'
+    response = try_get_url(client, url)
+    reversed_trunketed_post_texts = [
+        post['text'][:20] for post in reversed(posts)
+    ]
+    reversed_post_list_pattern = re.compile(
+        r'[\s\S]+?'.join(reversed_trunketed_post_texts)
+    )
+    page_content = response.content.decode('utf-8')
+    assert re.search(reversed_post_list_pattern, page_content), (
+        f'Убедитесь, что на странице `{url}` выводится инвертированный список '
+        'постов из задания.'
+    )

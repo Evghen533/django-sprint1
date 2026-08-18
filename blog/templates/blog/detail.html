@@ -1,32 +1,26 @@
-{% extends 'base.html' %}
-
-{% block title %}
-  {{ post.title }} — Blogicum
-{% endblock %}
-
-{% block content %}
-  <article class="card p-4 shadow-sm">
-    <h1 class="card-title h2 mb-3">{{ post.title }}</h1>
-
-    <div class="mb-4 text-muted small">
-      <span class="me-3">📍 {{ post.place }}</span>
-      <span>📅 {{ post.date }}</span>
-      <span class="ms-3">
-        Категория:
-        <a href="{% url 'blog:category_posts' post.category_slug %}" class="badge bg-secondary text-decoration-none">
-          {{ post.category_name }}
-        </a>
-      </span>
-    </div>
-
-    <hr class="my-4">
-
-    <div class="card-text">
-      {{ post.full_text }}
-    </div>
-
-    <div class="mt-4 pt-3 border-top">
-      <a href="{% url 'blog:index' %}" class="btn btn-outline-secondary">← Назад к ленте</a>
-    </div>
-  </article>
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'blog:index' %}">Лента записей</a>
+            <a href="{% url 'pages:about' %}">О проекте</a>
+            <a href="{% url 'pages:rules' %}">Наши правила</a>
+        </nav>
+    </header>
+    <main>
+        <h1>{{ post.title }}</h1>
+        <p><strong>Место:</strong> {{ post.place }}</p>
+        <p><strong>Дата:</strong> {{ post.date }}</p>
+        <p><strong>Категория:</strong> {{ post.category }}</p>
+        <hr>
+        <p>{{ post.full_text }}</p>
+        <a href="{% url 'blog:index' %}">Вернуться к ленте</a>
+    </main>
+</body>
+</html>

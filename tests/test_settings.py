@@ -2,55 +2,39 @@ from django import get_version
 
 
 def test_django_version():
-    min_ver = "3.2.16"
+    min_ver = '3.2.16'
     used_ver = get_version()
     assert used_ver >= min_ver, (
-        f"В проекте должна быть установлена версия Django "
-        f"не менее {min_ver}. У вас Django версии {used_ver}"
+        f'В проекте должна быть установлена версия Django '
+        f'не менее {min_ver}. У вас Django версии {used_ver}')
+
+
+def test_static_dir(settings_app_name, project_dirname):
+    settings_app = __import__(f'{settings_app_name}', globals(), locals())
+    try:
+        staticfiles_dirs = settings_app.settings.STATICFILES_DIRS
+    except Exception as e:
+        raise AssertionError(
+            'Убедитесь, что в файле settings.py установлена переменная '
+            '`STATICFILES_DIRS`.'
+        ) from e
+    assert isinstance(staticfiles_dirs, list), (
+        'Убедитесь, что значение переменной `STATICFILES_DIRS` в файле '
+        'settings.py - список.'
     )
 
 
-def test_static_dir(settings):
-    """
-    Проверяет, что STATICFILES_DIRS задан и содержит путь к папке static.
-    Это соответствует текущей структуре проекта.
-    """
-    assert hasattr(settings, "STATICFILES_DIRS"), (
-        "Переменная STATICFILES_DIRS должна быть определена " "в settings.py"
+def test_apps_registered(settings_app_name, project_dirname):
+    register_apps_old_style = ['blog', 'pages']
+    register_apps_new_style = [
+        'blog.apps.BlogConfig', 'pages.apps.PagesConfig']
+    settings_app = __import__(f'{settings_app_name}')
+    installed_apps = settings_app.settings.INSTALLED_APPS
+    registered = set(installed_apps)
+    app_names = ' и '.join(f'`{n}`' for n in register_apps_old_style)
+    assert set(register_apps_new_style).issubset(registered) or (
+        set(register_apps_old_style).issubset(registered)
+    ), (
+        f'Убедитесь, что приложения {app_names} зарегистрированы в файле '
+        'settings.py'
     )
-    assert len(settings.STATICFILES_DIRS) > 0, (
-        "STATICFILES_DIRS не должен быть пустым: укажите путь " "к папке со статикой"
-    )
-
-    has_static_path = any("static" in str(path) for path in settings.STATICFILES_DIRS)
-    assert has_static_path, (
-        "В STATICFILES_DIRS должен быть путь к папке static "
-        "(например, C:/Dev/django-sprint1/static)"
-    )
-
-
-def test_apps_registered(settings):
-    """
-    Проверяет, что blog зарегистрирован,
-    и учитывает, что pages может быть в проекте.
-    Если pages удалён — тест проверит отсутствие.
-    Если ещё есть — не будет требовать его удаления.
-    """
-    installed = settings.INSTALLED_APPS
-
-    has_blog = any(app == "blog" or app.startswith("blog.apps") for app in installed)
-    assert has_blog, (
-        "Приложение 'blog' должно быть зарегистрировано " "в INSTALLED_APPS."
-    )
-
-    # Если pages всё ещё в проекте — мы не требуем его удаления.
-    # Но если ты хочешь явно проверить, что его нет,
-    # раскомментируй строки ниже:
-    # has_pages = any(
-    #    app == "pages" or app.startswith("pages.apps")
-    #    for app in installed
-    # )
-    # assert not has_pages, (
-    #     "Приложение 'pages' не должно быть в INSTALLED_APPS: "
-    #     "оно удалено из проекта."
-    # )

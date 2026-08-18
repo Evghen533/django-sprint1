@@ -1,31 +1,31 @@
-{% extends "base.html" %}
-
-{% block title %}
-    <title>Лента записей — Блогикум</title>
-{% endblock %}
-
-{% block content %}
-<h1>Лента записей</h1>
-
-{% for post in posts %}
-  <article>
-    <h2>{{ post.title }}</h2>
-    <ul>
-      <li>Место: {{ post.location }}</li>
-      <li>Дата: {{ post.date }}</li>
-      <li>Категория:
-        <a href="{% url 'blog:category_posts' post.category.slug %}">
-          {{ post.category }}
-        </a>
-      </li>
-    </ul>
-    <p>{{ post.content|truncatechars:120 }}</p>
-    <a href="{% url 'blog:post_detail' post.pk %}" class="read-more-link">Читать полный текст</a>
-  </article>
-  {% if not forloop.last %}
-    <hr>
-  {% endif %}
-{% empty %}
-  <p>Записей пока нет.</p>
-{% endfor %}
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Лента записей</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'blog:index' %}">Лента записей</a>
+            <a href="{% url 'pages:about' %}">О проекте</a>
+            <a href="{% url 'pages:rules' %}">Наши правила</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Лента записей</h1>
+        {% for post in posts %}
+        <article>
+            <ul>
+                <li>Место: {{ post.location }}</li>
+                <li>Дата: {{ post.date }}</li>
+                <li>Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a></li>
+            </ul>
+            <p>{{ post.text }}</p>
+            <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
+        </article>
+        {% endfor %}
+    </main>
+</body>
+</html>
