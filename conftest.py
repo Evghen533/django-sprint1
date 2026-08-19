@@ -1,23 +1,17 @@
-import os
-import sys
-from pathlib import Path
-
-project_root = str(Path(__file__).resolve().parent.parent)
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blogicum.settings')
-
-from pathlib import Path
-
 import pytest
 from django.template import TemplateDoesNotExist
+from pathlib import Path
+
+# Этот импорт запускает настройку окружения (sys.path и DJANGO_SETTINGS_MODULE)
+import setup_env  # noqa: F401
 
 
 @pytest.fixture()
 def urlpatterns(imports_by_full_name):
     urlpattern_paths = [
-        'pages.urls.urlpatterns', 'blog.urls.urlpatterns']
+        'pages.urls.urlpatterns',
+        'blog.urls.urlpatterns'
+    ]
     urlpattern_vals = [imports_by_full_name[p] for p in urlpattern_paths]
     expected_names = [
         ('about', 'rules'),
@@ -29,7 +23,11 @@ def urlpatterns(imports_by_full_name):
          'blog.views.category_posts'),
     ]
     return zip(
-        urlpattern_paths, urlpattern_vals, expected_names, expected_views)
+        urlpattern_paths,
+        urlpattern_vals,
+        expected_names,
+        expected_views
+    )
 
 
 @pytest.fixture()
@@ -39,6 +37,7 @@ def settings_app_name():
 
 @pytest.fixture()
 def root_dir():
+    # Возвращает абсолютный путь к папке, где лежит conftest.py (корень проекта)
     return str(Path(__file__).resolve().parent)
 
 
@@ -63,7 +62,7 @@ EXPECTED_POSTS = [
                 Весь экипаж, кроме меня, утонул; я же,
                 несчастный Робинзон Крузо, был выброшен
                 полумёртвым на берег этого проклятого острова,
-                который назвал островом Отчаяния.''',
+                который назвал островом Отчаяния.'''
     },
     {
         'id': 1,
@@ -79,7 +78,7 @@ EXPECTED_POSTS = [
                 Мне всё думалось, что, останься мы на корабле, мы
                 непременно спаслись бы. Теперь из его обломков мы могли бы
                 построить баркас, на котором и выбрались бы из этого
-                гиблого места.''',
+                гиблого места.'''
     },
     {
         'id': 2,
@@ -91,7 +90,7 @@ EXPECTED_POSTS = [
                 в щепки; на том месте, где он стоял, торчат какие-то
                 жалкие обломки,  да и те видны только во время отлива.
                 Весь этот день я хлопотал  около вещей: укрывал и
-                укутывал их, чтобы не испортились от дождя.''',
+                укутывал их, чтобы не испортились от дождя.'''
     },
 ]
 
@@ -114,13 +113,11 @@ def try_get_url(client, url: str):
         ) from e
     except Exception as e:
         raise AssertionError(
-            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка:'
-            f' {e}'
+            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка: {e}'
         ) from e
     else:
         if response.status_code < 300:
             return response
         raise AssertionError(
-            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка:'
-            f' {response}'
+            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка: {response}'
         )
