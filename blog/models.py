@@ -11,16 +11,11 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(
-        max_length=200,
-        help_text=(
-            "Введите заголовок поста, он должен быть уникальным "
-            "и понятным для читателя"
-        ),
-    )
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    pub_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True)
     content = models.TextField()
-    # ИСПРАВЛЕНО: было CharField, стало DateField
     date = models.DateField("Дата")
     location = models.CharField(
         "Место", max_length=200, help_text="Например: Остров отчаянья"
