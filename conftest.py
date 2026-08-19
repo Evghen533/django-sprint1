@@ -2,7 +2,6 @@ import pytest
 from django.template import TemplateDoesNotExist
 from pathlib import Path
 
-# Этот импорт запускает настройку окружения (sys.path и DJANGO_SETTINGS_MODULE)
 import setup_env  # noqa: F401
 
 
@@ -37,7 +36,6 @@ def settings_app_name():
 
 @pytest.fixture()
 def root_dir():
-    # Возвращает абсолютный путь к папке, где лежит conftest.py (корень проекта)
     return str(Path(__file__).resolve().parent)
 
 
@@ -113,11 +111,13 @@ def try_get_url(client, url: str):
         ) from e
     except Exception as e:
         raise AssertionError(
-            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка: {e}'
+            f'При попытке загрузки страницы по адресу `{url}` '
+            f'возникла ошибка: {e}'
         ) from e
     else:
         if response.status_code < 300:
             return response
         raise AssertionError(
-            f'При попытке загрузки страницы по адресу `{url}` возникла ошибка: {response}'
+            f'При попытке загрузки страницы по адресу `{url}` '
+            f'возникла ошибка: {response}'
         )
