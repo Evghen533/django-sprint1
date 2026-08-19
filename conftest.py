@@ -2,8 +2,6 @@ import pytest
 from django.template import TemplateDoesNotExist
 from pathlib import Path
 
-import setup_env  # noqa: F401
-
 
 @pytest.fixture()
 def urlpatterns(imports_by_full_name):
