@@ -8,7 +8,7 @@
   <h1>{{ post.title }}</h1>
   <p><strong>Дата:</strong> {{ post.date }}</p>
   <p><strong>Место:</strong> {{ post.location }}</p>
-  <p><strong>Категория:</strong> {{ post.category_title }}</p>
+  <p><strong>Категория:</strong> {{ post.category }}</p>
   <hr>
   <div>{{ post.text|linebreaks }}</div>
   <a href="{% url 'blog:index' %}">← Назад к списку</a>
