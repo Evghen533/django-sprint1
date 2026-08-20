@@ -1,7 +1,7 @@
 import pytest
 from django.template import TemplateDoesNotExist
 from pathlib import Path
-from blog.views import posts as solution_posts  # <-- берём список прямо из views.py
+from blog.views import posts as solution_posts
 
 
 @pytest.fixture()
@@ -43,7 +43,6 @@ def project_dirname():
     return 'blogicum'
 
 
-# Теперь фикстура posts просто возвращает копию твоего списка из views.py
 @pytest.fixture()
 def posts():
     return solution_posts.copy()
