@@ -1,35 +1,18 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>О нас</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Главная</a> |
-            <a href="/pages/about/">О нас</a> |
-            <a href="/pages/rules/">Правила</a>
-        </nav>
-    </header>
+{% extends "base.html" %}
 
-    <main>
-        <h1>О нас</h1>
-        <p>Мы — команда проекта Blogicum. Наша цель — сделать удобный и понятный блог для всех любителей качественного контента.</p>
-        <section>
-            <h2>Наши ценности</h2>
-            <ul>
-                <li>Прозрачность и честность.</li>
-                <li>Уважение к авторам и читателям.</li>
-                <li>Постоянное развитие и улучшение.</li>
-            </ul>
-        </section>
-    </main>
+{% block title %}О нас — Дневник Робинзона{% endblock %}
 
-    <footer>
-        <p>&copy; 2024 Blogicum. Все права защищены.</p>
-    </footer>
-</body>
-</html>
+{% block content %}
+    <h1>О нас</h1>
+    <p>Мы — команда проекта Blogicum. Наша цель — сделать удобный и понятный блог для всех любителей качественного контента.</p>
+
+    <section>
+        <h2>Наши ценности</h2>
+        <!-- ВАЖНО: именно здесь нужна структура ul + li -->
+        <ul>
+            <li>Прозрачность и честность.</li>
+            <li>Уважение к авторам и читателям.</li>
+            <li>Постоянное развитие и улучшение.</li>
+        </ul>
+    </section>
+{% endblock %}

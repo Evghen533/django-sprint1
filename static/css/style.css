@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Базовые настройки */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -8,7 +9,7 @@ body {
     line-height: 1.6;
 }
 
-/* Шапка сайта (светло-голубая полоса) */
+/* Шапка сайта */
 header {
     background-color: #e3f2fd;
     border-bottom: 1px solid #ccc;
@@ -25,7 +26,7 @@ header {
     text-decoration: none;
 }
 
-/* Меню в шапке */
+/* Меню */
 nav ul {
     list-style: none;
     padding: 0;
@@ -47,7 +48,6 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
-/* Активная кнопка в меню (синяя заливка) */
 nav ul li a.active {
     background-color: #1976d2;
     color: #fff;
@@ -55,16 +55,16 @@ nav ul li a.active {
     border-radius: 4px;
 }
 
-/* Основной контейнер */
 main {
     max-width: 700px;
     margin: 30px auto;
     background: #fff;
     padding: 40px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 8px; /* Добавил скругление для main, чтобы не нужен был .post-item */
 }
 
-/* Заголовок "Лента записей" */
+/* Заголовок */
 h1 {
     color: #222;
     margin-top: 0;
@@ -74,26 +74,29 @@ h1 {
     padding-bottom: 15px;
 }
 
-/* Блок поста (теперь это аккуратная карточка) */
+/* Блок поста (для ленты записей) */
 .post-item {
-    padding: 20px;             /* Внутренний отступ, чтобы текст не прилипал к краям */
-    background-color: #ffffff; /* Белый фон карточки */
-    border-radius: 8px;        /* Скругление углов */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Легкая тень для объема */
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
 }
 
-.post-item ul {
-    list-style: none; /* Убирает точки */
-    padding: 0;       /* Убирает отступ слева */
+/* Списки внутри контента (универсальные стили) */
+ul, ol {
+    list-style: none;
+    padding: 0;
     margin: 0;
 }
 
-.post-item ul li {
-    margin-bottom: 5px; /* Добавляет воздух между строками */
-    color: #555;       /* Делает текст чуть темнее/серее для красоты */
+ul li, ol li {
+    margin-bottom: 12px;
+    color: #555;
+    line-height: 1.5;
 }
 
-/* Список метаданных (Место, Дата, Категория) */
+/* Метаданные поста */
 .post-meta ul {
     list-style: none;
     padding: 0;
@@ -110,7 +113,6 @@ h1 {
     color: #333;
 }
 
-/* Ссылка категории (синяя, как на скриншоте) */
 .post-meta a {
     color: #1976d2;
     text-decoration: none;
@@ -120,7 +122,6 @@ h1 {
     text-decoration: underline;
 }
 
-/* Текст анонса */
 .post-preview {
     color: #333;
     margin-bottom: 15px;
@@ -128,7 +129,6 @@ h1 {
     line-height: 1.5;
 }
 
-/* Ссылка "Читать полный текст" (синяя, подчеркнутая) */
 .read-more-link {
     color: #1976d2;
     text-decoration: underline;
@@ -142,16 +142,25 @@ h1 {
     text-decoration: none;
 }
 
-/* Надежный разделитель: просто серая полоска */
-.post-separator {
-    height: 4px;               /* Было 1px, стало 4px — теперь точно видно */
-    background-color: #e0e0e0; /* Приятный светло-серый цвет */
-    margin: 40px 0;            /* Большой отступ сверху и снизу линии */
-    width: 100%;
-    box-sizing: border-box;    /* Чтобы ширина считалась корректно */
+.read-more {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-/* Футер */
+.read-more:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.post-separator {
+    height: 4px;
+    background-color: #e0e0e0;
+    margin: 40px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 footer {
     text-align: center;
     padding: 20px;

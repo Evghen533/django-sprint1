@@ -9,9 +9,9 @@
 <body>
     <header>
         <nav>
-            <a href="/">Главная</a> |
-            <a href="/pages/about/">О нас</a> |
-            <a href="/pages/rules/">Правила</a>
+            <a href="{% url 'blog:index' %}">Лента записей</a> |
+            <a href="{% url 'pages:about' %}">О нас</a> |
+            <a href="{% url 'pages:rules' %}">Правила</a>
         </nav>
     </header>
 

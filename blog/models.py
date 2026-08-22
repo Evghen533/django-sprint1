@@ -27,5 +27,8 @@ class Post(models.Model):
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
     )
 
+    class Meta:
+        ordering = ['-date']
+
     def __str__(self):
         return self.title
