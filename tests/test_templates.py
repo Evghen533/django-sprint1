@@ -1,57 +1,56 @@
-import re
 import pytest
+from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
 @pytest.mark.parametrize(
-    'url, template', [
-        ('', 'blog/index.html'),
-        ('posts/0/', 'blog/detail.html'),
-        ('posts/1/', 'blog/detail.html'),
-        ('posts/2/', 'blog/detail.html'),
-        ('category/category_slug/', 'blog/category.html'),
-        ('pages/about/', 'pages/about.html'),
-        ('pages/rules/', 'pages/rules.html'),
+    'view_name, kwargs, template', [
+        ('blog:index', {}, 'index.html'),
+        ('blog:post_detail', {'post_id': 1}, 'detail.html'),
+        ('blog:post_detail', {'post_id': 2}, 'detail.html'),
+        ('blog:post_detail', {'post_id': 3}, 'detail.html'),
+        ('blog:category_posts', {'category_slug': 'travel'}, 'category.html'),
+        ('pages:about', {}, 'about.html'),
+        ('pages:rules', {}, 'rules.html'),
     ]
 )
-def test_page_templates(client, url, template):
-    url = f'/{url}' if url else '/'
+@pytest.mark.django_db
+def test_page_templates(client, view_name, kwargs, template):
+    url = reverse(view_name, kwargs=kwargs)
     response = client.get(url)
+    assert response.status_code == 200, f"URL {url} должен возвращать 200, а получил {response.status_code}"
     assertTemplateUsed(response, template, msg_prefix=(
         f'Убедитесь, что для отображения страницы `{url}` используется '
         f'шаблон `{template}`.'
     ))
 
-@pytest.mark.parametrize('post_id', (0, 1, 2))
+@pytest.mark.django_db
+@pytest.mark.parametrize('post_id', (1, 2, 3))
 def test_post_detail(post_id, client, posts):
     url = f'/posts/{post_id}/'
     response = client.get(url)
-    assert response.context is not None, (
-        'Убедитесь, что в шаблон страницы с адресом `posts/<int:pk>/` '
-        'передаётся словарь контекста.'
-    )
-    assert isinstance(response.context.get('post'), dict), (
-        'Убедитесь, что в словарь контекста для страницы `posts/<int:pk>/` '
-        'под ключом `post` передаётся непустой словарь.'
-    )
-    assert posts[post_id] == response.context['post'], (
-        f'Убедитесь, что в словаре контекста для страницы `posts/{post_id}/` '
-        f'под ключом `post` передаётся словарь с `"id": {post_id}` из списка `posts`.'
+    assert response.status_code == 200
+
+    post_obj = response.context.get('post')
+    assert post_obj is not None, 'Контекст не содержит ключ "post"'
+
+    expected_post = posts[post_id - 1]  # posts[0] = ID 1 и т.д.
+    assert expected_post == post_obj, (
+        f'На странице {url} должен быть пост с ID {post_id}'
     )
 
+@pytest.mark.django_db
 def test_post_list(client, posts):
     url = '/'
     response = client.get(url)
+    assert response.status_code == 200
 
     reversed_posts = list(reversed(posts))
+    reversed_truncated_post_texts = [p.text[:20] for p in reversed_posts]
 
-    reversed_trunketed_post_texts = [
-        p['text'][:20] for p in reversed_posts
-    ]
-    reversed_post_list_pattern = re.compile(
-        r'[\s\S]+?'.join(reversed_trunketed_post_texts)
-    )
+    pattern = re.compile(r'[\s\S]+?'.join(reversed_truncated_post_texts))
     page_content = response.content.decode('utf-8')
-    assert re.search(reversed_post_list_pattern, page_content), (
+
+    assert re.search(pattern, page_content), (
         f'Убедитесь, что на странице `{url}` выводится инвертированный список '
         'постов из задания.'
     )

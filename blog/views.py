@@ -1,76 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
-
-
-posts = [
-    {
-        'id': 0,
-        'location': 'Остров отчаянья',
-        'date': '30 сентября 1659 года',
-        'category': 'travel',
-        'text': (
-            'Наш корабль, застигнутый в открытом море '
-            'страшным штормом, потерпел крушение. '
-            'Весь экипаж, кроме меня, утонул; я же, '
-            'несчастный Робинзон Крузо, был выброшен '
-            'полумёртвым на берег этого проклятого острова, '
-            'который назвал островом Отчаяния.'
-        )  # ❌ была запятая — теперь её нет
-    },
-    {
-        'id': 1,
-        'location': 'Остров отчаянья',
-        'date': '1 октября 1659 года',
-        'category': 'not-my-day',
-        'text': (
-            'Проснувшись поутру, я увидел, что наш корабль сняло '
-            'с мели приливом и пригнало гораздо ближе к берегу. '
-            'Это подало мне надежду, что, когда ветер стихнет, '
-            'мне удастся добраться до корабля и запастись едой и '
-            'другими необходимыми вещами. Я немного приободрился, '
-            'хотя печаль о погибших товарищах не покидала меня. '
-            'Мне всё думалось, что, останься мы на корабле, мы '
-            'непременно спаслись бы. Теперь из его обломков мы могли бы '
-            'построить баркас, на котором и выбрались бы из этого '
-            'гиблого места.'
-        )  # ❌ была запятая — теперь её нет
-    },
-    {
-        'id': 2,
-        'location': 'Остров отчаянья',
-        'date': '25 октября 1659 года',
-        'category': 'not-my-day',
-        'text': (
-            'Всю ночь и весь день шёл дождь и дул сильный '
-            'порывистый ветер. 25 октября. Корабль за ночь разбило '
-            'в щепки; на том месте, где он стоял, торчат какие-то '
-            'жалкие обломки, да и те видны только во время отлива. '
-            'Весь этот день я хлопотал около вещей: укрывал и '
-            'укутывал их, чтобы не испортились от дождя.'
-        )  # ❌ была запятая — теперь её нет
-    },
-]
-
+from .models import Post
 
 def index(request):
-    """Главная страница с постами (новые сверху)."""
-    return render(request, 'blog/index.html', {'posts': posts[::-1]})
+    posts = Post.objects.all()
+    return TemplateResponse(request, "index.html", {"posts": posts})
 
-
-def post_detail(request, id):
-    """Страница отдельного поста."""
-    post = posts[id]
-    return render(request, 'blog/detail.html', {'post': post})
-
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    return TemplateResponse(request, "detail.html", {"post": post})
 
 def category_posts(request, category_slug):
-    """Посты по категории."""
-    filtered_posts = [
-        post for post in posts
-        if post['category'] == category_slug
-    ]
+    posts = Post.objects.filter(category__slug=category_slug)
     return TemplateResponse(
         request,
-        'blog/category.html',
-        {'posts': filtered_posts, 'category_slug': category_slug}
+        "category.html",
+        {"posts": posts, "category_slug": category_slug}
     )
