@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Post
+from django.shortcuts import render
+from django.http import Http404
 
 posts = [
     {
@@ -45,13 +45,13 @@ posts = [
 ]
 
 def index(request):
-    posts = Post.objects.all().order_by('-id')  # замени на '-date', если есть поле date
     return render(request, 'index.html', {'posts': posts})
 
 def post_detail(request, id):
-    post = get_object_or_404(Post, id=id)
+    post = next((p for p in posts if p['id'] == id), None)
+    if not post:
+        raise Http404("Пост не найден")
     return render(request, 'detail.html', {'post': post})
 
 def category_posts(request, category_slug):
-    # По заданию: на странице категории выводим только slug, посты не нужны
     return render(request, 'category.html', {'category_slug': category_slug})

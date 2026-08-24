@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <a href="{% url 'blog:index' %}" class="text-decoration-none text-secondary">&larr; Назад в ленту</a>
+
+    <article class="card shadow-sm mt-3">
+      <div class="card-body">
+        <h1 class="card-title">{{ post.title }}</h1>
+        <p class="text-muted">
+          <small>
+            Опубликовано: {{ post.date }} | Место: {{ post.location }} | Категория: {{ post.category }}
+          </small>
+        </p>
+        <hr>
+        <!-- Полный текст поста -->
+        <div class="card-text">
+          {{ post.content|linebreaks }}
+        </div>
+      </div>
+    </article>
+  </div>
+{% endblock %}

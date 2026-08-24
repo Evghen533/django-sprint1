@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лента записей — Блогикум</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Блогикум</a>
+        <nav>
+            <a href="/" class="active">Лента записей</a>
+            <a href="/pages/about/">О проекте</a>
+            <a href="/pages/rules/">Наши правила</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Лента записей</h1>
+        {% for post in posts %}
+        <article>
+            <ul>
+                <li>Место: {{ post.location }}</li>
+                <li>Дата: {{ post.date }}</li>
+                <li>Категория: <a href="/category/{{ post.category }}/">{{ post.category }}</a></li>
+            </ul>
+            <p>{{ post.text|truncatechars:150 }}</p>
+            <a href="/posts/{{ post.id }}/" class="read-more">Читать полный текст</a>
+        </article>
+        {% endfor %}
+    </main>
+
+    <footer>
+        &copy; Блогикум
+    </footer>
+</body>
+</html>

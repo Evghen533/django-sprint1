@@ -168,3 +168,18 @@ footer {
     font-size: 0.9rem;
     margin-top: 20px;
 }
+
+.category-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #e9ecef;
+    color: #495057;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.category-tag:hover {
+    background-color: #dee2e6;
+    color: #212529;
+}
