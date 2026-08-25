@@ -8,18 +8,17 @@
 </head>
 <body>
     <header>
-        <a href="/" class="logo">Блогикум</a>
+        <a href="{% url 'blog:index' %}" class="logo">Блогикум</a>
         <nav>
-            <a href="/">Лента записей</a>
-            <a href="/pages/about/">О проекте</a>
-            <a href="/pages/rules/">Наши правила</a>
+            <a href="{% url 'blog:index' %}">Лента записей</a>
+            <a href="{% url 'pages:about' %}">О проекте</a>
+            <a href="{% url 'pages:rules' %}">Наши правила</a>
         </nav>
     </header>
 
     <main>
         <h1>Публикации в категории {{ category_slug }}</h1>
-        <p>Здесь будут посты категории «{{ category_slug }}».</p>
-        <a href="/" class="back-link">← Назад к ленте</a>
+        <a href="{% url 'blog:index' %}" class="back-link">← Назад к ленте</a>
     </main>
 
     <footer>

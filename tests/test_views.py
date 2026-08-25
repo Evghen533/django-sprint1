@@ -1,10 +1,5 @@
 import pytest
-from django.test import Client
-
-
-@pytest.fixture
-def client():
-    return Client()
+from django.urls import reverse
 
 
 @pytest.mark.django_db
@@ -19,5 +14,5 @@ def test_category_posts_renders_correct_template(client):
 def test_category_posts_passes_slug_to_context(client):
     response = client.get('/category/adventure/')
     assert response.status_code == 200
-    assert 'category' in response.context, 'В контексте нет переменной category'
-    assert response.context['category'].slug == 'adventure'
+    assert 'category_slug' in response.context, 'В контексте нет переменной category_slug'
+    assert response.context['category_slug'] == 'adventure'

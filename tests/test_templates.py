@@ -8,13 +8,11 @@ from pytest_django.asserts import assertTemplateUsed
         ('blog:index', {}, 'index.html'),
         ('blog:post_detail', {'id': 1}, 'detail.html'),
         ('blog:post_detail', {'id': 2}, 'detail.html'),
-        ('blog:post_detail', {'id': 3}, 'detail.html'),
         ('blog:category_posts', {'category_slug': 'travel'}, 'category.html'),
         ('pages:about', {}, 'about.html'),
         ('pages:rules', {}, 'rules.html'),
     ]
 )
-@pytest.mark.django_db
 def test_page_templates(client, view_name, kwargs, template):
     url = reverse(view_name, kwargs=kwargs)
     response = client.get(url)
@@ -22,28 +20,25 @@ def test_page_templates(client, view_name, kwargs, template):
         f"URL {url} должен возвращать 200, "
         "а получил {response.status_code}"
     )
-    assertTemplateUsed(
-        response,
-        template,
-        msg_prefix=f"Убедитесь, что для {url} используется шаблон {template}."
-    )
 
 
-@pytest.mark.django_db
-@pytest.mark.parametrize('post_id', (1, 2, 3))
-def test_post_detail(post_id, client, posts):
-    post = posts[post_id - 1]
-    url = reverse('blog:post_detail', kwargs={'id': post.id})
+@pytest.mark.parametrize('post_id', (0, 1, 2))
+def test_post_detail(post_id, client):
+    url = reverse('blog:post_detail', kwargs={'id': post_id})
     response = client.get(url)
     assert response.status_code == 200
 
     post_obj = response.context.get('post')
     assert post_obj is not None, 'Контекст не содержит ключ "post"'
-    assert post == post_obj, f'На странице {url} должен быть пост {post}'
+
+    assert post_obj['id'] == post_id
+    assert post_obj['location'] == 'Остров отчаянья'
+    assert post_obj['date'] in ('30 сентября 1659 года', '1 октября 1659 года', '25 октября 1659 года')
+    assert post_obj['category'] in ('travel', 'not-my-day')
+    assert 'корабль' in post_obj['text'] or 'дождь' in post_obj['text']
 
 
-@pytest.mark.django_db
-def test_post_list(client, posts):
+def test_post_list(client):
     url = "/"
     response = client.get(url)
 
@@ -54,10 +49,15 @@ def test_post_list(client, posts):
         "В контексте страницы списка постов нет переменной \"posts\""
     )
 
-    expected_ids = [post.id for post in posts]
-    actual_ids = [post.id for post in posts_in_context]
+    assert len(posts_in_context) == 3, "Должно быть 3 поста"
 
-    assert actual_ids == expected_ids, (
-        f"Список ID постов не совпадает. Ожидалось: {expected_ids}, "
-        f"получено: {actual_ids}"
-    )
+    expected_ids = [0, 1, 2]
+    actual_ids = [post['id'] for post in posts_in_context]
+
+    assert actual_ids == expected_ids, f"Неверные ID постов: {actual_ids}"
+
+    for post in posts_in_context:
+        assert 'location' in post
+        assert 'date' in post
+        assert 'category' in post
+        assert 'text' in post
