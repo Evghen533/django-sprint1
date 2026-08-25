@@ -2,6 +2,7 @@ import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
+
 @pytest.mark.parametrize(
     'view_name, kwargs, template', [
         ('blog:index', {}, 'index.html'),
@@ -17,8 +18,15 @@ from pytest_django.asserts import assertTemplateUsed
 def test_page_templates(client, view_name, kwargs, template):
     url = reverse(view_name, kwargs=kwargs)
     response = client.get(url)
-    assert response.status_code == 200, f"URL {url} должен возвращать 200, а получил {response.status_code}"
-    assertTemplateUsed(response, template, msg_prefix=f'Убедитесь, что для `{url}` используется шаблон `{template}`.')
+    assert response.status_code == 200, (
+        f"URL {url} должен возвращать 200, "
+        "а получил {response.status_code}"
+    )
+    assertTemplateUsed(
+        response,
+        template,
+        msg_prefix=f"Убедитесь, что для {url} используется шаблон {template}."
+    )
 
 
 @pytest.mark.django_db
@@ -36,14 +44,20 @@ def test_post_detail(post_id, client, posts):
 
 @pytest.mark.django_db
 def test_post_list(client, posts):
-    url = '/'
+    url = "/"
     response = client.get(url)
+
     assert response.status_code == 200
 
     posts_in_context = response.context.get('posts')
-    assert posts_in_context is not None, 'В контексте страницы списка постов нет переменной "posts"'
+    assert posts_in_context is not None, (
+        "В контексте страницы списка постов нет переменной \"posts\""
+    )
 
-    expected_posts = list(reversed(posts))
-    assert list(posts_in_context) == expected_posts, (
-        'Список постов на главной должен соответствовать ожидаемому (возможно, в обратном порядке).'
+    expected_ids = [post.id for post in posts]
+    actual_ids = [post.id for post in posts_in_context]
+
+    assert actual_ids == expected_ids, (
+        f"Список ID постов не совпадает. Ожидалось: {expected_ids}, "
+        f"получено: {actual_ids}"
     )

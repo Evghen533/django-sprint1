@@ -16,12 +16,21 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=200, verbose_name="Заголовок", blank=True)
+    title = models.CharField(
+        max_length=200,
+        verbose_name="Заголовок",
+        blank=True
+    )
     text = models.TextField(verbose_name="Текст")
-    content = models.TextField(blank=True, null=True)  # оставляем как просили
+    content = models.TextField(blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
-    date = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
-    location = models.CharField(max_length=100, verbose_name="Место", blank=True)
+    date = models.DateTimeField(
+        auto_now_add=True, verbose_name="Дата публикации")
+    location = models.CharField(
+        max_length=100,
+        verbose_name="Место",
+        blank=True
+    )
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,

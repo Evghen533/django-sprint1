@@ -1,6 +1,5 @@
 import pytest
 from blog.models import Category, Post
-from django.template import TemplateDoesNotExist
 from pathlib import Path
 
 
@@ -21,33 +20,35 @@ def project_dirname():
 
 @pytest.fixture
 def categories(db):
-    cat_travel = Category.objects.create(slug='travel', name='Путешествия')
-    cat_adventure = Category.objects.create(slug='adventure', name='Приключения')
-    cat_city = Category.objects.create(slug='city', name='Город')
-    return [cat_travel, cat_adventure, cat_city]
+    travel = Category.objects.create(name='Путешествия', slug='travel')
+    adventure = Category.objects.create(name='Приключения', slug='adventure')
+    city = Category.objects.create(name='Город', slug='city')
+    return travel, adventure, city
+
 
 @pytest.fixture
 def posts(db, categories):
-    return [
-        Post.objects.create(
-            title='Post 0',
-            text='Text 0',
-            slug='post-0',
-            location='Остров',
-            category=categories[0],
-        ),
-        Post.objects.create(
-            title='Post 1',
-            text='Text 1',
-            slug='post-1',
-            location='Горы',
-            category=categories[1],
-        ),
-        Post.objects.create(
-            title='Post 2',
-            text='Text 2',
-            slug='post-2',
-            location='Пляж',
-            category=categories[2],
-        ),
-    ]
+    travel, adventure, city = categories
+    p1 = Post.objects.create(
+        title='Крушение корабля',
+        text='Наш корабль, застигнутый в открытом море страшным штормом, потерпел крушение. Весь экипаж, кроме меня, утонул; я же, несчастный Робинзон Крузо, был выброшен полумёртвым на берег этого проклятого острова, который назвал островом Отчаяния.',
+        location='Остров отчаянья',
+        category=travel,
+        slug='crash-of-the-ship',
+    )
+    p2 = Post.objects.create(
+        title='Надежда на спасение',
+        text='Проснувшись поутру, я увидел, что наш корабль сняло с мели приливом и пригнало гораздо ближе к берегу. Это подало мне надежду, что, когда ветер стихнет, мне удастся добраться до корабля и запастись едой и другими необходимыми вещами. Я немного приободрился, хотя печаль о погибших товарищах не покидала меня. Мне всё думалось, что, останься мы на корабле, мы непременно спаслись бы. Теперь из его обломков мы могли бы построить баркас, на котором и выбрались бы из этого гиблого места.',
+        location='Остров отчаянья',
+        category=adventure,
+        slug='hope-for-rescue',
+    )
+    p3 = Post.objects.create(
+        title='Дождь и ветер',
+        text='Всю ночь и весь день шёл дождь и дул сильный порывистый ветер. 25 октября. Корабль за ночь разбило в щепки; на том месте, где он стоял, торчат какие-то жалкие обломки, да и те видны только во время отлива. Весь этот день я хлопотал около вещей: укрывал и укутывал их, чтобы не испортились от дождя.',
+        location='Остров отчаянья',
+        category=city,
+        slug='rain-and-wind',
+    )
+
+    return [p1, p2, p3]

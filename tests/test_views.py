@@ -1,9 +1,11 @@
 import pytest
 from django.test import Client
 
+
 @pytest.fixture
 def client():
     return Client()
+
 
 @pytest.mark.django_db
 def test_category_posts_renders_correct_template(client):

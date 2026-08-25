@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.parametrize(
     'url_suffix, slug', [
         ('/travel/', 'travel'),

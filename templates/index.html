@@ -22,8 +22,11 @@
         <article>
             <ul>
                 <li>Место: {{ post.location }}</li>
-                <li>Дата: {{ post.date }}</li>
-                <li>Категория: <a href="/category/{{ post.category }}/">{{ post.category }}</a></li>
+                <li>Дата: {{ post.date|date:"j F Y" }}</li>
+                <li>
+                    Категория:
+                    <a href="/category/{{ post.category.slug }}/">{{ post.category.name }}</a>
+                </li>
             </ul>
             <p>{{ post.text|truncatechars:150 }}</p>
             <a href="/posts/{{ post.id }}/" class="read-more">Читать полный текст</a>

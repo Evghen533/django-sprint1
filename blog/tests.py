@@ -2,6 +2,7 @@ import pytest
 from django.utils import timezone
 from blog.models import Post
 
+
 @pytest.mark.django_db
 def test_post_creation():
     post = Post.objects.create(
