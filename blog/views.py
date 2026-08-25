@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 
 posts = [
     {
@@ -43,8 +43,10 @@ posts = [
     },
 ]
 
+
 def index(request):
     return render(request, 'index.html', {'posts': posts})
+
 
 def post_detail(request, id):
     post = next((p for p in posts if p['id'] == id), None)
@@ -52,6 +54,7 @@ def post_detail(request, id):
         from django.http import Http404
         raise Http404("Пост не найден")
     return render(request, 'detail.html', {'post': post})
+
 
 def category_posts(request, category_slug):
     return render(request, 'category.html', {'category_slug': category_slug})

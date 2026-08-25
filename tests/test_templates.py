@@ -1,6 +1,5 @@
 import pytest
 from django.urls import reverse
-from pytest_django.asserts import assertTemplateUsed
 
 
 @pytest.mark.parametrize(
@@ -33,7 +32,11 @@ def test_post_detail(post_id, client):
 
     assert post_obj['id'] == post_id
     assert post_obj['location'] == 'Остров отчаянья'
-    assert post_obj['date'] in ('30 сентября 1659 года', '1 октября 1659 года', '25 октября 1659 года')
+    assert post_obj['date'] in (
+        '30 сентября 1659 года',
+        '1 октября 1659 года',
+        '25 октября 1659 года'
+    )
     assert post_obj['category'] in ('travel', 'not-my-day')
     assert 'корабль' in post_obj['text'] or 'дождь' in post_obj['text']
 
