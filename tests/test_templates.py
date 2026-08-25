@@ -21,7 +21,7 @@ def test_page_templates(client, view_name, kwargs, template):
     )
 
 
-@pytest.mark.parametrize('post_id', (0, 1, 2))
+@pytest.mark.parametrize('post_id', (2, 1, 0))
 def test_post_detail(post_id, client):
     url = reverse('blog:post_detail', kwargs={'id': post_id})
     response = client.get(url)
@@ -54,7 +54,7 @@ def test_post_list(client):
 
     assert len(posts_in_context) == 3, "Должно быть 3 поста"
 
-    expected_ids = [0, 1, 2]
+    expected_ids = [2, 1, 0]
     actual_ids = [post['id'] for post in posts_in_context]
 
     assert actual_ids == expected_ids, f"Неверные ID постов: {actual_ids}"

@@ -6,7 +6,7 @@ def test_category_posts_renders_correct_template(client):
     response = client.get('/category/travel/')
     assert response.status_code == 200
     assert len(response.templates) > 0, 'Шаблон не был использован'
-    assert response.templates[0].name == 'category.html'
+    assert response.templates[0].name == 'blog/category.html'
 
 
 @pytest.mark.django_db
