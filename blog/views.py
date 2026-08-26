@@ -17,7 +17,7 @@ posts = [
         ),
     },
     {
-                "id": 1,
+        "id": 1,
         "location": "Остров отчаянья",
         "date": "1 октября 1659 года",
         "category": "not-my-day",
