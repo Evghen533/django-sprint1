@@ -63,11 +63,8 @@ def post_detail(request, id):
     return render(request, "blog/detail.html", {"post": post})
 
 
-# ЭТА ФУНКЦИЯ БЫЛА ПОТЕРЯНА ПРИ MERGE — ДОБАВЬ ЕЁ ОБЯЗАТЕЛЬНО
 def category_posts(request, slug):
-    # Фильтруем посты по категории (в данных category = 'travel', а в URL может быть 'travel')
     filtered_posts = [p for p in posts if p["category"] == slug]
-    # Возвращаем в обратном порядке, как в index
     return render(
         request,
         "blog/category.html",
