@@ -1,5 +1,5 @@
 import pytest
-from blogicum.blog.models import Category, Post
+from blog.models import Category, Post
 from pathlib import Path
 
 
