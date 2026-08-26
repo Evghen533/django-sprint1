@@ -7,7 +7,7 @@ from django.urls import reverse
         ('blog:index', {}, 'index.html'),
         ('blog:post_detail', {'id': 1}, 'detail.html'),
         ('blog:post_detail', {'id': 2}, 'detail.html'),
-        ('blog:category_posts', {'category_slug': 'travel'}, 'category.html'),
+        ('blog:category_posts', {'slug': 'travel'}, 'category.html'),
         ('pages:about', {}, 'about.html'),
         ('pages:rules', {}, 'rules.html'),
     ]
