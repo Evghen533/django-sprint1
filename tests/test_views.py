@@ -16,6 +16,7 @@ def test_category_posts_passes_slug_to_context(client):
     assert 'category_slug' in response.context, 'В контексте нет переменной category_slug'
     assert response.context['category_slug'] == 'adventure'
 
+
 @pytest.mark.django_db
 def test_blog_posts(client):
     response = client.get('/')
