@@ -1,5 +1,5 @@
 import pytest
-from blogicum.blog.models import Category, Post
+from blog.models import Post
 from pathlib import Path
 
 
@@ -19,11 +19,12 @@ def project_dirname():
 
 
 @pytest.fixture
-def categories(db):
-    travel = Category.objects.create(name='Путешествия', slug='travel')
-    adventure = Category.objects.create(name='Приключения', slug='adventure')
-    city = Category.objects.create(name='Город', slug='city')
-    return travel, adventure, city
+def categories():
+    return [
+        {"name": "Путешествия", "slug": "travel"},
+        {"name": "Приключения", "slug": "adventure"},
+        {"name": "Город", "slug": "city"},
+    ]
 
 
 @pytest.fixture
