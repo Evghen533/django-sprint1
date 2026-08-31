@@ -1,6 +1,7 @@
 import pytest
 from django.urls import reverse
 
+
 @pytest.mark.parametrize(
     'view_name, kwargs, template', [
         ('blog:index', {}, 'index.html'),
@@ -15,12 +16,12 @@ def test_page_templates(client, view_name, kwargs, template):
         f"URL {url} должен возвращать 200, а получил {response.status_code}"
     )
 
-    # Простая проверка шаблона (опционально, можно убрать, если не требуется)
     if view_name.startswith('blog'):
         expected_template = f'blog/{template}'
     else:
         expected_template = f'pages/{template}'
 
     assert any(t.name == expected_template for t in response.templates), (
-        f'Не использован ожидаемый шаблон {expected_template}, найдены: {[t.name for t in response.templates]}'
+        f'Не использован ожидаемый шаблон {expected_template}',
+        'найдены: {[t.name for t in response.templates]}'
     )
