@@ -3,17 +3,22 @@
 {% block title %}Лента записей — Блогикум{% endblock %}
 
 {% block content %}
-<h1>Лента записей</h1>
-{% for post in posts %}
+  <h1>Лента записей</h1>
+  {% for post in posts %}
     <article>
-        <ul>
-            <li>Место: {{ post.location }}</li>
-            <li>Дата: {{ post.date }}</li>
-            <li>Категория: {{ post.category }}</li>
-        </ul>
-        <p>{{ post.text|truncatewords:20 }}</p>
+      <!-- Выводим метаданные вручную, так как post_meta.html нет -->
+      <ul>
+        <li>Место: {{ post.location }}</li>
+        <li>Дата: {{ post.date }}</li>
+        <li>Категория: {{ post.category }}</li>
+      </ul>
+
+      <!-- Обрезанный текст и ссылка -->
+      <p>
+        {{ post.text|truncatewords:20 }}
         <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>
+      </p>
     </article>
     <hr>
-{% endfor %}
+  {% endfor %}
 {% endblock %}
