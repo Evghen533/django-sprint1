@@ -9,14 +9,8 @@
 
   {% for post in posts %}
     <article>
-      <!-- Метаданные вручную -->
-      <ul>
-        <li>Место: {{ post.location }}</li>
-        <li>Дата: {{ post.date }}</li>
-        <li>Категория: {{ post.category }}</li>
-      </ul>
+      {% include "post_card.html" %}
 
-      <!-- Обрезанный текст и ссылка -->
       <p>
         {{ post.text|truncatewords:20 }}
         <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>

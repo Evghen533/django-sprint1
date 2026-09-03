@@ -3,10 +3,14 @@
 {% block title %}{{ post.location }} — Блогикум{% endblock %}
 
 {% block content %}
-  <h1>{{ post.location }}</h1>
+  <article>
+    <h1>{{ post.location }}</h1>
 
-  {% include "post_card.html" %}
+    {% include "post_card.html" %}
 
-  <hr>
-  <a href="{% url 'blog:index' %}" class="back-link">← Назад к ленте</a>
+    <p>{{ post.text }}</p>
+
+    <hr>
+    <a href="{% url 'blog:index' %}" class="back-link">← Назад к ленте</a>
+  </article>
 {% endblock %}
