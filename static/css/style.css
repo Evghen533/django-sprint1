@@ -183,3 +183,18 @@ footer {
     background-color: #dee2e6;
     color: #212529;
 }
+
+.read-more {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff; /* Синий цвет */
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.read-more:hover {
+  background-color: #0056b3;
+}

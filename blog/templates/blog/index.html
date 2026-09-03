@@ -8,10 +8,8 @@
     <article>
       {% include "post_card.html" %}
 
-      <p>
-        {{ post.text|truncatewords:20 }}
-        <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>
-      </p>
+      <p>{{ post.text|truncatewords:20 }}</p>
+      <a href="{% url 'blog:post_detail' post.id %}" class="read-more">Читать полный текст</a>
     </article>
     <hr>
   {% endfor %}
