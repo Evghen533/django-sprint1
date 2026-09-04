@@ -44,7 +44,7 @@ WSGI_APPLICATION = "blogicum.wsgi.application"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates", BASE_DIR / "includes",],
+        "DIRS": [BASE_DIR / "templates",],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
